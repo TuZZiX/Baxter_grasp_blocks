@@ -1,4 +1,11 @@
 # Baxter_grasp_blocks
 
 
-The repository for the Robotices final project
+This repository is for the robotice final project
+
+co-workers:
+	Shipei Tian
+	Zhiang Chen
+	Alex DeFiore
+	Qian Wang
+
