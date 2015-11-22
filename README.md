@@ -2,7 +2,7 @@
 
 This repository is for the robotice final project
 
-co-workers:
+Collaborators:
 	Shipei Tian
 	Zhiang Chen
 	Alex DeFiore
