@@ -13,7 +13,12 @@ cart_move_action_client_("cartMoveActionServer", true) { // constructor
 		//       ROS_INFO("retrying...");
 	}
 	ROS_INFO("connected to action server"); // if here, then we connected to the server;
-	
+	collision_offset << 0,0,0.5;
+	gripper_offset << 0,0,0.2;
+	arm_back_pose << -0.907528, -0.111813, 2.06622, 1.8737, -1.295, 2.00164, -2.87179;
+	drop_offset_left << 0.1,0.5,0;
+	drop_offset_right << -0.1,-0.5,0;
+	take_look_pose << -0.907528, -0.111813, 2.06622, 1.8737, -1.295, 2.00164, -2.87179;
 }
 // This function will be called once when the goal completes
 // this is optional, but it is a convenient way to get access to the "result" message sent by the server
@@ -26,6 +31,7 @@ void ArmPlanningInterface::doneCb_(const actionlib::SimpleClientGoalState& state
 }
 
 bool ArmPlanningInterface::moveArmsBack(void) {
+	/*
 	//    ROS_INFO("requesting a joint-space motion plan");
 	cart_goal_.command_code = cwru_action::cwru_baxter_cart_moveGoal::RT_ARM_PLAN_JSPACE_PATH_CURRENT_TO_PRE_POSE;
 	cart_move_action_client_.sendGoal(cart_goal_, boost::bind(&ArmPlanningInterface::doneCb_, this, _1, _2)); // we could also name additional callback functions here, if desired
@@ -37,6 +43,15 @@ bool ArmPlanningInterface::moveArmsBack(void) {
 	computed_arrival_time_= cart_result_.computed_arrival_time; //action_client.get_computed_arrival_time();
 	//    ROS_INFO("computed move time: %f",computed_arrival_time_);
 	return true;
+	 */
+	if(planPath(arm_back_pose)){
+		if(!executePath()) {
+			return false;
+		}
+	} else {
+		return false;
+	}
+	return false;
 }
 
 bool ArmPlanningInterface::planPath(geometry_msgs::PoseStamped pose) {
@@ -73,7 +88,7 @@ bool ArmPlanningInterface::planPath(Eigen::VectorXd joints) {
 	//    ROS_INFO("computed move time: %f",computed_arrival_time_);
 	return true;
 }
-
+/*
 bool ArmPlanningInterface::planPath(Eigen::Vector3d dp_displacement) {
 	
 	//	ROS_INFO("requesting a cartesian-space motion plan along vector");
@@ -94,7 +109,7 @@ bool ArmPlanningInterface::planPath(Eigen::Vector3d dp_displacement) {
 	//    ROS_INFO("computed move time: %f",computed_arrival_time_);
 	return true;
 }
-
+*/
 bool ArmPlanningInterface::executePath(double timeout) {
 	//    ROS_INFO("requesting execution of planned path");
 	cart_goal_.command_code = cwru_action::cwru_baxter_cart_moveGoal::RT_ARM_EXECUTE_PLANNED_PATH;
@@ -147,10 +162,104 @@ geometry_msgs::PoseStamped ArmPlanningInterface::getGripperPose(void) {
 	//                tool_pose_stamped_.pose.orientation.w);
 	return gripper_pose;
 }
-bool ColorMovement(string color) {
+#define EXECUTE()	if(planPath(next)){ if(!executePath()) {	return false;} } else 	return false
+#define ADDPOS(a,b,c)	a.pose.position.x=b.pose.position.x+c[0],a.pose.position.y=b.pose.position.y+c[1],a.pose.position.z=b.pose.position.z+c[2]
+#define SUBPOS(a,b,c)	a.pose.position.x=b.pose.position.x-c[0],a.pose.position.y=b.pose.position.y-c[1],a.pose.position.z=b.pose.position.z-c[2]
+bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStamped block_pose) {
+	geometry_msgs::PoseStamped next = block_pose;
 	if (color.compare("red")==0) {
-		planPath();
-		executePath();
+		ADDPOS(next, block_pose, collision_offset);
+		EXECUTE();
+		ADDPOS(next, block_pose, gripper_offset);
+		EXECUTE();
+		///  Grasp Block //TODO
+		ADDPOS(next, block_pose, collision_offset);
+		EXECUTE();
+		ADDPOS(next, next, drop_offset_left);
+		EXECUTE();
+		SUBPOS(next, next, collision_offset);
+		EXECUTE();
+		///  Drop Block //TODO
+	} else if (color.compare("blue")==0) {
+		ADDPOS(next, block_pose, collision_offset);
+		EXECUTE();
+		ADDPOS(next, block_pose, gripper_offset);
+		EXECUTE();
+		///  Grasp Block //TODO
+		ADDPOS(next, block_pose, collision_offset);
+		EXECUTE();
+		if(planPath(take_look_pose)){
+			if(!executePath()) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+		ADDPOS(next, block_pose, collision_offset);
+		EXECUTE();
+		ADDPOS(next, block_pose, gripper_offset);
+		EXECUTE();
+		///  Drop Block //TODO
+		
+	} else if (color.compare("white")==0) {
+		ADDPOS(next, block_pose, collision_offset);
+		EXECUTE();
+		ADDPOS(next, block_pose, gripper_offset);
+		EXECUTE();
+		///  Grasp Block //TODO
+		ADDPOS(next, block_pose, collision_offset);
+		EXECUTE();
+		ADDPOS(next, next, drop_offset_right);
+		EXECUTE();
+		SUBPOS(next, next, collision_offset);
+		EXECUTE();
+		///  Drop Block //TODO
+	} else if (color.compare("black")==0) {
+		ADDPOS(next, block_pose, collision_offset);
+		EXECUTE();
+		ADDPOS(next, block_pose, gripper_offset);
+		EXECUTE();
+		///  Grasp Block //TODO
+		ADDPOS(next, block_pose, collision_offset);
+		EXECUTE();
+		ADDPOS(next, block_pose, gripper_offset);
+		EXECUTE();
+		///  Drop Block //TODO
+		
+	} else if (color.compare("green")==0) {
+		ADDPOS(next, block_pose, collision_offset);
+		EXECUTE();
+		ADDPOS(next, block_pose, gripper_offset);
+		EXECUTE();
+		///  Grasp Block //TODO
+		ADDPOS(next, block_pose, collision_offset);
+		EXECUTE();
+		if(planPath(take_look_pose)){
+			if(!executePath()) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+		ADDPOS(next, block_pose, collision_offset);
+		EXECUTE();
+		ADDPOS(next, next, drop_offset_left);
+		EXECUTE();
+		SUBPOS(next, next, collision_offset);
+		EXECUTE();
+		///  Drop Block //TODO
+		
+	} else if (color.compare("wood")==0) {
+		ADDPOS(next, block_pose, collision_offset);
+		EXECUTE();
+		ADDPOS(next, block_pose, gripper_offset);
+		EXECUTE();
+		///  Grasp Block //TODO
+		ADDPOS(next, block_pose, collision_offset);
+		EXECUTE();
+		ADDPOS(next, block_pose, gripper_offset);
+		EXECUTE();
+		///  Drop Block //TODO
 	}
 }
 void ArmPlanningInterface::convToPose(std::vector<geometry_msgs::PoseStamped> &pose_seq, std::vector<Eigen::Vector3f> &position_seq, Eigen::Quaterniond &orientation) {
@@ -158,7 +267,7 @@ void ArmPlanningInterface::convToPose(std::vector<geometry_msgs::PoseStamped> &p
 	for (int i = 0; i < size; i++) {
 		(pose_seq[i]).pose.position.x = (position_seq[i])[0];
 		(pose_seq[i]).pose.position.y = (position_seq[i])[1];
-		(pose_seq[i]).pose.position.z = (position_seq[i])[2] + 0.1;
+		(pose_seq[i]).pose.position.z = (position_seq[i])[2];
 		(pose_seq[i]).pose.orientation.x = orientation.x();
 		(pose_seq[i]).pose.orientation.y = orientation.y();
 		(pose_seq[i]).pose.orientation.z = orientation.y();

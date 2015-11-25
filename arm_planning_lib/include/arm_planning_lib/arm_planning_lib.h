@@ -29,6 +29,15 @@ private:
 	//callback fnc for cartesian action server to return result to this node:
 	void doneCb_(const actionlib::SimpleClientGoalState& state,
 				 const cwru_action::cwru_baxter_cart_moveResultConstPtr& result);
+	Eigen::VectorXd arm_back_pose;
+	Eigen::Vector3d gripper_offset;
+	Eigen::Vector3d collision_offset;
+	Eigen::Vector3d drop_offset_left;
+	Eigen::Vector3d drop_offset_right;
+	Eigen::VectorXd take_look_pose;
+	
+	
+	
 public:
 	ArmPlanningInterface(ros::NodeHandle* nodehandle); //define the body of the constructor outside of class definition
 	
@@ -41,11 +50,11 @@ public:
 	
 	bool planPath(geometry_msgs::PoseStamped pose);
 	bool planPath(Eigen::VectorXd joints);
-	bool planPath(Eigen::Vector3d dp_displacement);
+//	bool planPath(Eigen::Vector3d dp_displacement);
 	
 	bool executePath(double timeout = 0.0);
 	
-	bool ColorMovement(string color);
+	bool ColorMovement(string color, geometry_msgs::PoseStamped block_pose);
 	
 	void convToPose(std::vector<geometry_msgs::PoseStamped> &pose_seq, std::vector<Eigen::Vector3f> &position_seq, Eigen::Quaterniond &orientation);
 };
