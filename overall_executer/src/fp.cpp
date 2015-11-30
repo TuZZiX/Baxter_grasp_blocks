@@ -1,7 +1,6 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Pose.h>
 #include <cwru_msgs/Path.h>
-#include <Eigen/Vector3d.h>
 #include <arm_planning_lib/arm_planning_lib.h>
 #include <pcl_chen/pcl_grabing.h>
 #include <image_transport/image_transport.h>
@@ -92,7 +91,7 @@ int main(int argc, char argv**){
 			
 			ROS_INFO("Path to block successfully executed.\nGrabbing block now.\n");
 			
-			success = grabBlock(width);
+			success = planner.grabBlock(width);
 			
 			while(!success){
 				success = grabBlock(width);
@@ -108,7 +107,7 @@ int main(int argc, char argv**){
 				ROS_INFO("Path failed. \nReleasing gripper and restarting process.\nWaiting for hand signal.\n");
 				wasHand = false;
 				handEntered = false;
-				releaseBlock();
+				planner.releaseBlock();
 				planner.moveArmsBack();
 				publishToScreen(nh);
 				ros::spinOnce();
@@ -127,7 +126,7 @@ int main(int argc, char argv**){
 				continue;
 			}*/
 			ROS_INFO("Path executed successfully.\nReleasing block and waiting for next hand signal.\n");
-			releaseBlock();
+			planner.releaseBlock();
 			wasHand = false;
 			handEntered = false;
 		}
