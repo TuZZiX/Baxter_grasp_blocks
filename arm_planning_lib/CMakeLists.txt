@@ -4,6 +4,10 @@ project(arm_planning_lib)
 find_package(catkin_simple REQUIRED)
 find_package(cmake_modules REQUIRED)
 find_package(Eigen REQUIRED)
+find_package(catkin REQUIRED COMPONENTS
+  cwru_action
+  baxter_traj_streamer
+)
 include_directories(${EIGEN3_INCLUDE_DIR})
 add_definitions(${EIGEN_DEFINITIONS})
 
@@ -20,8 +24,8 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 cs_add_library(arm_planning_lib src/arm_planning_lib.cpp) 
 
 # Executables
-# cs_add_executable(example src/example.cpp)
-# target_link_library(example my_lib)
+cs_add_executable(arm_planning_lib_test src/arm_planning_lib_test.cpp)
+target_link_libraries(arm_planning_lib_test arm_planning_lib baxter_traj_streamer)
 
 cs_install()
 cs_export()

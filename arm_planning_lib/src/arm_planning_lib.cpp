@@ -13,12 +13,44 @@ cart_move_action_client_("cartMoveActionServer", true) { // constructor
 		//       ROS_INFO("retrying...");
 	}
 	ROS_INFO("connected to action server"); // if here, then we connected to the server;
-	collision_offset << 0,0,0.5;
-	gripper_offset << 0,0,0.2;
-	arm_back_pose << 2.1445051390136722, 1.853432284844971, -1.0837574254028322, -0.3424612105041504, -1.1524030655822755, 1.557373993121338, 1.4170147511901856;
-	drop_offset_left << 0.1,0.5,0;
-	drop_offset_right << -0.1,-0.5,0;
-	take_look_pose << 1.5750147721618653, 1.519407968664551, -0.12003399651489259, 0.17525730481567384, 0.22396119477539064, 1.5167235022888184, 1.1010147092468263;
+	collision_offset << 0, 0, 0.206422664913 - 0.0543679733262;
+	gripper_offset << 0, 0, 0.0475048224968 + 0.129146973155;
+//	arm_back_pose << -0.20628314186274055, -1.0357409957184627, -0.5780814380569512, 1.3172378913039648, 1.7037512511889998, 1.2374043903744254, 1.6265004725741392;
+	arm_back_pose.pose.position.x = 0.628566212076;
+    arm_back_pose.pose.position.y = -0.347307547123;
+    arm_back_pose.pose.position.z = 0.350523968221;
+    arm_back_pose.pose.orientation.x = 0.630141382934;
+    arm_back_pose.pose.orientation.y = 0.775598336984;
+    arm_back_pose.pose.orientation.z = 0.000519772148981;
+    arm_back_pose.pose.orientation.w = 0.0369971217577;
+
+	drop_offset_left << 0.618217876627 - 0.627811922278, -0.373787660953 - -0.00340972086974, 0.0347969815439 - 0.0543679733262;
+	drop_offset_right << 0.607757389961 - 0.627811922278, 0.29148022485 - -0.00340972086974, 0.0556670907964 - 0.0543679733262;
+//	take_look_pose << -0.18503156094537968, 0.44527797626583865, 0.36021593694382065, 1.827325037963473, 1.0199002550686511, 1.0137709796128629, 1.2701787563643496;
+	take_look_pose.pose.position.x = 0.52542198926;
+    take_look_pose.pose.position.y = -0.19065849761;
+    take_look_pose.pose.position.z = 0.154626356725;
+    take_look_pose.pose.orientation.x = -0.249821685981;
+    take_look_pose.pose.orientation.y = -0.335221027398;
+    take_look_pose.pose.orientation.z = -0.504147162678;
+    take_look_pose.pose.orientation.w = 0.755679579166;
+
+    pre_grab_pose.pose.position.x = 0.62630899645;
+    pre_grab_pose.pose.position.y = -0.00805334156627;
+    pre_grab_pose.pose.position.z = 0.206422664913;
+    pre_grab_pose.pose.orientation.x = 0.629827329351;
+    pre_grab_pose.pose.orientation.y = 0.776484996568;
+    pre_grab_pose.pose.orientation.z = 0.0187988533019;
+    pre_grab_pose.pose.orientation.w = -0.00593198287789;
+
+    grab_pose.pose.position.x = 0.627811922278;
+    grab_pose.pose.position.y = -0.00340972086974;
+    grab_pose.pose.position.z = 0.0543679733262;
+    grab_pose.pose.orientation.x = 0.629826654045;
+    grab_pose.pose.orientation.y = 0.776525376337;
+    grab_pose.pose.orientation.z = 0.0171547560392;
+    grab_pose.pose.orientation.w = -0.0056956215282;
+
 	default_orientation.x() = 0.535374791616;
 	default_orientation.y() = 0.844190102515;
 	default_orientation.z() = 0.0264940675637;
@@ -29,8 +61,8 @@ cart_move_action_client_("cartMoveActionServer", true) { // constructor
 //int g_return_code=0;
 void ArmPlanningInterface::doneCb_(const actionlib::SimpleClientGoalState& state,
 								 const cwru_action::cwru_baxter_cart_moveResultConstPtr& result) {
-	ROS_INFO(" doneCb: server responded with state [%s]", state.toString().c_str());
-	ROS_INFO("got return value= %d", result->return_code);
+//	ROS_INFO(" doneCb: server responded with state [%s]", state.toString().c_str());
+//	ROS_INFO("got return value= %d", result->return_code);
 	cart_result_=*result;
 }
 
@@ -74,7 +106,7 @@ bool ArmPlanningInterface::planPath(geometry_msgs::PoseStamped pose) {
 	return true;
 }
 
-bool ArmPlanningInterface::planPath(Eigen::VectorXd joints) {
+bool ArmPlanningInterface::planPath(Vector7d joints) {
 	ROS_INFO("requesting a joint-space motion plan");
 	cart_goal_.command_code = cwru_action::cwru_baxter_cart_moveGoal::RT_ARM_PLAN_JSPACE_PATH_CURRENT_TO_QGOAL;
 	cart_goal_.q_goal_right.resize(7);
@@ -93,14 +125,14 @@ bool ArmPlanningInterface::planPath(Eigen::VectorXd joints) {
 	return true;
 }
 
-geometry_msgs::Pose ArmPlanningInterface::transformEigenAffine3dToPose(Eigen::Affine3d e) {
-	Eigen::Vector3d Oe;
-	Eigen::Matrix3d Re;
+geometry_msgs::Pose ArmPlanningInterface::transformEigenAffine3dToPose(Affine3d e) {
+	Vector3d Oe;
+	Matrix3d Re;
 	geometry_msgs::Pose pose;
 	Oe = e.translation();
 	Re = e.linear();
 	
-	Eigen::Quaterniond q(Re); // convert rotation matrix Re to a quaternion, q
+	Quaterniond q(Re); // convert rotation matrix Re to a quaternion, q
 	pose.position.x = Oe(0);
 	pose.position.y = Oe(1);
 	pose.position.z = Oe(2);
@@ -113,12 +145,12 @@ geometry_msgs::Pose ArmPlanningInterface::transformEigenAffine3dToPose(Eigen::Af
 	return pose;
 }
 
-bool ArmPlanningInterface::planPath(Eigen::Vector3f plane_normal, Eigen::Vector3f major_axis, Eigen::Vector3f centroid) {
+bool ArmPlanningInterface::planPath(Vector3f plane_normal, Vector3f major_axis, Vector3f centroid) {
 	geometry_msgs::PoseStamped pose;
-	Eigen::Affine3d Affine_des_gripper;
-	Eigen::Vector3d xvec_des,yvec_des,zvec_des,origin_des;
+	Affine3d Affine_des_gripper;
+	Vector3d xvec_des,yvec_des,zvec_des,origin_des;
 	
-	Eigen::Matrix3d Rmat;
+	Matrix3d Rmat;
 	for (int i=0;i<3;i++) {
 		origin_des[i] = centroid[i]; // convert to double precision
 		zvec_des[i] = -plane_normal[i]; //want tool z pointing OPPOSITE surface normal
@@ -132,7 +164,7 @@ bool ArmPlanningInterface::planPath(Eigen::Vector3f plane_normal, Eigen::Vector3
 	Affine_des_gripper.linear()=Rmat;
 	Affine_des_gripper.translation()=origin_des;
 	
-	//convert des pose from Eigen::Affine to geometry_msgs::PoseStamped
+	//convert des pose from Affine to geometry_msgs::PoseStamped
 	pose.pose = transformEigenAffine3dToPose(Affine_des_gripper);
 
 	return planPath(pose);
@@ -156,13 +188,12 @@ bool ArmPlanningInterface::executePath(double timeout) {
 }
 
 //send goal command to request right-arm joint angles; these will be stored in internal variable
-Eigen::VectorXd ArmPlanningInterface::getJointAngles(void) {
-	Eigen::VectorXd joints;
+Vector7d ArmPlanningInterface::getJointAngles(void) {
+	Vector7d joints;
 	//   ROS_INFO("requesting right-arm joint angles");
 	cart_goal_.command_code = cwru_action::cwru_baxter_cart_moveGoal::RT_ARM_GET_Q_DATA;
 	cart_move_action_client_.sendGoal(cart_goal_, boost::bind(&ArmPlanningInterface::doneCb_, this, _1, _2)); // we could also name additional callback functions here, if desired
 	finished_before_timeout_ = cart_move_action_client_.waitForResult(ros::Duration(2.0));
-	joints.resize(7);
 	for (int i = 0; i < 7; i++) {
 		joints[i] = cart_result_.q_arm_right[i];
 	}
@@ -291,7 +322,7 @@ bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStampe
 	}
 	return false;
 }
-void ArmPlanningInterface::convToPose(std::vector<geometry_msgs::PoseStamped> &pose_seq, std::vector<Eigen::Vector3f> &position_seq, Eigen::Quaterniond &orientation) {
+void ArmPlanningInterface::convToPose(std::vector<geometry_msgs::PoseStamped> &pose_seq, std::vector<Vector3f> &position_seq, Quaterniond &orientation) {
 	int size = (int)pose_seq.size();
 	for (int i = 0; i < size; i++) {
 		(pose_seq[i]).pose.position.x = (position_seq[i])[0];

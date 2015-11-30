@@ -10,11 +10,13 @@
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
 #include <string>
+//#include <baxter_traj_streamer/baxter_traj_streamer.h>
 
-using namespace std;  //just to avoid requiring std::, Eigen:: ...
+using namespace std;  //just to avoid requiring std::,  ...
+using namespace Eigen;
+typedef Matrix<double, 7, 1> Vector7d;
 
-//define a class to encapsulate some of the tedium of populating and sending goals,
-// and interpreting responses
+
 class ArmPlanningInterface {
 private:
 	ros::NodeHandle nh_;
@@ -29,36 +31,40 @@ private:
 	//callback fnc for cartesian action server to return result to this node:
 	void doneCb_(const actionlib::SimpleClientGoalState& state,
 				 const cwru_action::cwru_baxter_cart_moveResultConstPtr& result);
-	geometry_msgs::Pose transformEigenAffine3dToPose(Eigen::Affine3d e);
-	Eigen::VectorXd arm_back_pose;
-	Eigen::Vector3d gripper_offset;
-	Eigen::Vector3d collision_offset;
-	Eigen::Vector3d drop_offset_left;
-	Eigen::Vector3d drop_offset_right;
-	Eigen::VectorXd take_look_pose;
-	
-	
+	geometry_msgs::Pose transformEigenAffine3dToPose(Affine3d e);
 	
 public:
 	ArmPlanningInterface(ros::NodeHandle* nodehandle); //define the body of the constructor outside of class definition
 	
 	~ArmPlanningInterface(void) {
 	}
+
+//	Vector7d arm_back_pose;
+	geometry_msgs::PoseStamped arm_back_pose;
+//	Vector7d take_look_pose;
+	geometry_msgs::PoseStamped take_look_pose;
+	geometry_msgs::PoseStamped pre_grab_pose;
+	geometry_msgs::PoseStamped grab_pose;
+	Vector3d gripper_offset;
+	Vector3d collision_offset;
+	Vector3d drop_offset_left;
+	Vector3d drop_offset_right;
+	Quaterniond default_orientation;
+
 	bool moveArmsBack(void);
 	
-	Eigen::VectorXd getJointAngles(void);
+	Vector7d getJointAngles(void);
 	geometry_msgs::PoseStamped getGripperPose(void);
 	
 	bool planPath(geometry_msgs::PoseStamped pose);
-	bool planPath(Eigen::VectorXd joints);
-	bool planPath(Eigen::Vector3f plane_normal, Eigen::Vector3f major_axis, Eigen::Vector3f centroid) ;
+	bool planPath(Vector7d joints);
+	bool planPath(Vector3f plane_normal, Vector3f major_axis, Vector3f centroid) ;
 	
 	bool executePath(double timeout = 0.0);
 	
 	bool ColorMovement(string color, geometry_msgs::PoseStamped block_pose);
 	
-	void convToPose(std::vector<geometry_msgs::PoseStamped> &pose_seq, std::vector<Eigen::Vector3f> &position_seq, Eigen::Quaterniond &orientation = default_orientation);
-	static Eigen::Quaterniond default_orientation;
+	void convToPose(std::vector<geometry_msgs::PoseStamped> &pose_seq, std::vector<Vector3f> &position_seq, Quaterniond &orientation);
 };
 
 #endif  // this closes the header-include trick...ALWAYS need one of these to match #ifndef

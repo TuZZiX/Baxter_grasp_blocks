@@ -1,0 +1,15 @@
+<launch>
+
+<!--<node pkg="tf" type="static_transform_publisher" name="camera_link_frame_bdcst" args="0 0 0  0 0 0 1 kinect_link camera_link 100"/>-->
+
+<!--<node pkg="tf" type="static_transform_publisher" name="kinect_calib" args="0 0 0 -0.500 0.500 -0.500 0.500 kinect_link kinect_pc_frame 100"/>-->
+
+<node pkg="baxter_tools" type="enable_robot.py" name="enable_robot" args="-e"/>
+
+<node pkg="baxter_traj_streamer" type="traj_interpolator_as" name="traj_interpolator_as"/>
+
+<node pkg="baxter_cartesian_moves" type="baxter_cart_move_as" name="baxter_cart_move_as"/>
+
+<node pkg="arm_planning_lib" type="arm_planning_lib_test" name="arm_planning_lib_test"/>s
+
+</launch>
