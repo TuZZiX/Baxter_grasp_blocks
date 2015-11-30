@@ -57,12 +57,14 @@ public:
 	geometry_msgs::PoseStamped getGripperPose(void);
 	
 	bool planPath(geometry_msgs::PoseStamped pose);
+	bool planPath(geometry_msgs::Pose pose);
 	bool planPath(Vector7d joints);
 	bool planPath(Vector3f plane_normal, Vector3f major_axis, Vector3f centroid) ;
 	
 	bool executePath(double timeout = 0.0);
 	
 	bool ColorMovement(string color, geometry_msgs::PoseStamped block_pose);
+	bool ColorMovement(string color, geometry_msgs::Pose block_pose);
 	
 	void convToPose(std::vector<geometry_msgs::PoseStamped> &pose_seq, std::vector<Vector3f> &position_seq, Quaterniond &orientation);
 };

@@ -1,0 +1,5 @@
+roslaunch pcl_chen baxter_world.launch
+roslaunch pcl_chen kinect_xform.launch
+rosrun rviz rviz
+rosrun pcl_chen pcl_grabing_test_main
+

@@ -1,0 +1,8 @@
+<launch>
+  <!-- Publish a static transform between the world and the base of the robot -->
+  <!--node pkg="tf2_ros" type="static_transform_publisher" name="base_to_world" args="0 0 0 0 0 0 1 world base " /-->
+  <!-- wsn: transform for kinect -->
+<node pkg="tf" type="static_transform_publisher" name="camera_link_frame_bdcst" args="0 0 0  0 0 0 1 kinect_link camera_link 100"/>
+<node pkg="tf" type="static_transform_publisher" name="kinect_calib" args="0 0 0 -0.500 0.500 -0.500 0.500 kinect_link kinect_pc_frame 100"/>
+
+</launch>
