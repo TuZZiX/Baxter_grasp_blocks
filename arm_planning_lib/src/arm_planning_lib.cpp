@@ -15,10 +15,14 @@ cart_move_action_client_("cartMoveActionServer", true) { // constructor
 	ROS_INFO("connected to action server"); // if here, then we connected to the server;
 	collision_offset << 0,0,0.5;
 	gripper_offset << 0,0,0.2;
-	arm_back_pose << -0.907528, -0.111813, 2.06622, 1.8737, -1.295, 2.00164, -2.87179;
+	arm_back_pose << 2.1445051390136722, 1.853432284844971, -1.0837574254028322, -0.3424612105041504, -1.1524030655822755, 1.557373993121338, 1.4170147511901856;
 	drop_offset_left << 0.1,0.5,0;
 	drop_offset_right << -0.1,-0.5,0;
-	take_look_pose << -0.907528, -0.111813, 2.06622, 1.8737, -1.295, 2.00164, -2.87179;
+	take_look_pose << 1.5750147721618653, 1.519407968664551, -0.12003399651489259, 0.17525730481567384, 0.22396119477539064, 1.5167235022888184, 1.1010147092468263;
+	default_orientation.x() = 0.535374791616;
+	default_orientation.y() = 0.844190102515;
+	default_orientation.z() = 0.0264940675637;
+	default_orientation.w() = 0.00386881152953;
 }
 // This function will be called once when the goal completes
 // this is optional, but it is a convenient way to get access to the "result" message sent by the server
@@ -270,7 +274,7 @@ void ArmPlanningInterface::convToPose(std::vector<geometry_msgs::PoseStamped> &p
 		(pose_seq[i]).pose.position.z = (position_seq[i])[2];
 		(pose_seq[i]).pose.orientation.x = orientation.x();
 		(pose_seq[i]).pose.orientation.y = orientation.y();
-		(pose_seq[i]).pose.orientation.z = orientation.y();
+		(pose_seq[i]).pose.orientation.z = orientation.z();
 		(pose_seq[i]).pose.orientation.w = orientation.w();
 	}
 	

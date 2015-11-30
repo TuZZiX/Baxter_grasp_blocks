@@ -56,7 +56,8 @@ public:
 	
 	bool ColorMovement(string color, geometry_msgs::PoseStamped block_pose);
 	
-	void convToPose(std::vector<geometry_msgs::PoseStamped> &pose_seq, std::vector<Eigen::Vector3f> &position_seq, Eigen::Quaterniond &orientation);
+	void convToPose(std::vector<geometry_msgs::PoseStamped> &pose_seq, std::vector<Eigen::Vector3f> &position_seq, Eigen::Quaterniond &orientation = default_orientation);
+	static Eigen::Quaterniond default_orientation;
 };
 
 #endif  // this closes the header-include trick...ALWAYS need one of these to match #ifndef

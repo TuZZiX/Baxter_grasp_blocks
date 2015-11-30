@@ -1,0 +1,15 @@
+Done:
+	basic interface
+	arm_back_pose
+	take_look_pose
+	default_orientation for grab things
+Todo:
+	test programe
+	find collision_offset
+	find gripper_offset
+	find drop_offset_left
+	find drop_offset_right
+	add stop function for action
+	add timeout
+	modify cart planning server to be the interface
+	try to use better planning library
