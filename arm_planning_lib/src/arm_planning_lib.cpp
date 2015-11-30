@@ -92,28 +92,52 @@ bool ArmPlanningInterface::planPath(Eigen::VectorXd joints) {
 	//    ROS_INFO("computed move time: %f",computed_arrival_time_);
 	return true;
 }
-/*
-bool ArmPlanningInterface::planPath(Eigen::Vector3d dp_displacement) {
+
+geometry_msgs::Pose ArmPlanningInterface::transformEigenAffine3dToPose(Eigen::Affine3d e) {
+	Eigen::Vector3d Oe;
+	Eigen::Matrix3d Re;
+	geometry_msgs::Pose pose;
+	Oe = e.translation();
+	Re = e.linear();
 	
-	//	ROS_INFO("requesting a cartesian-space motion plan along vector");
-	cart_goal_.command_code = cwru_action::cwru_baxter_cart_moveGoal::RT_ARM_PLAN_PATH_CURRENT_TO_GOAL_DP_XYZ;
-	//must fill in desired vector displacement
-	cart_goal_.arm_dp_right.resize(3);
-	for (int i=0;i<3;i++)
-	{
-		cart_goal_.arm_dp_right[i] = dp_displacement[i];
-	}
-	cart_move_action_client_.sendGoal(cart_goal_, boost::bind(&ArmPlanningInterface::doneCb_, this, _1, _2)); // we could also name additional callback functions here, if desired
-	finished_before_timeout_ = cart_move_action_client_.waitForResult(ros::Duration(2.0));
-	//	ROS_INFO("return code: %d",cart_result_.return_code);
-	if (!finished_before_timeout_ || cart_result_.return_code==cwru_action::cwru_baxter_cart_moveResult::RT_ARM_PATH_NOT_VALID || cart_result_.return_code!=cwru_action::cwru_baxter_cart_moveResult::SUCCESS) {
-		return false;
-	}
-	computed_arrival_time_= cart_result_.computed_arrival_time; //action_client.get_computed_arrival_time();
-	//    ROS_INFO("computed move time: %f",computed_arrival_time_);
-	return true;
+	Eigen::Quaterniond q(Re); // convert rotation matrix Re to a quaternion, q
+	pose.position.x = Oe(0);
+	pose.position.y = Oe(1);
+	pose.position.z = Oe(2);
+	
+	pose.orientation.x = q.x();
+	pose.orientation.y = q.y();
+	pose.orientation.z = q.z();
+	pose.orientation.w = q.w();
+	
+	return pose;
 }
-*/
+
+bool ArmPlanningInterface::planPath(Eigen::Vector3f plane_normal, Eigen::Vector3f major_axis, Eigen::Vector3f centroid) {
+	geometry_msgs::PoseStamped pose;
+	Eigen::Affine3d Affine_des_gripper;
+	Eigen::Vector3d xvec_des,yvec_des,zvec_des,origin_des;
+	
+	Eigen::Matrix3d Rmat;
+	for (int i=0;i<3;i++) {
+		origin_des[i] = centroid[i]; // convert to double precision
+		zvec_des[i] = -plane_normal[i]; //want tool z pointing OPPOSITE surface normal
+		xvec_des[i] = major_axis[i];
+	}
+	origin_des[2]+=0.02; //raise up 2cm
+	yvec_des = zvec_des.cross(xvec_des); //construct consistent right-hand triad
+	Rmat.col(0)= xvec_des;
+	Rmat.col(1)= yvec_des;
+	Rmat.col(2)= zvec_des;
+	Affine_des_gripper.linear()=Rmat;
+	Affine_des_gripper.translation()=origin_des;
+	
+	//convert des pose from Eigen::Affine to geometry_msgs::PoseStamped
+	pose.pose = transformEigenAffine3dToPose(Affine_des_gripper);
+
+	return planPath(pose);
+}
+
 bool ArmPlanningInterface::executePath(double timeout) {
 	//    ROS_INFO("requesting execution of planned path");
 	cart_goal_.command_code = cwru_action::cwru_baxter_cart_moveGoal::RT_ARM_EXECUTE_PLANNED_PATH;
@@ -265,6 +289,7 @@ bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStampe
 		EXECUTE();
 		///  Drop Block //TODO
 	}
+	return false;
 }
 void ArmPlanningInterface::convToPose(std::vector<geometry_msgs::PoseStamped> &pose_seq, std::vector<Eigen::Vector3f> &position_seq, Eigen::Quaterniond &orientation) {
 	int size = (int)pose_seq.size();

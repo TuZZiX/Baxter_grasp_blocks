@@ -29,6 +29,7 @@ private:
 	//callback fnc for cartesian action server to return result to this node:
 	void doneCb_(const actionlib::SimpleClientGoalState& state,
 				 const cwru_action::cwru_baxter_cart_moveResultConstPtr& result);
+	geometry_msgs::Pose transformEigenAffine3dToPose(Eigen::Affine3d e);
 	Eigen::VectorXd arm_back_pose;
 	Eigen::Vector3d gripper_offset;
 	Eigen::Vector3d collision_offset;
@@ -50,7 +51,7 @@ public:
 	
 	bool planPath(geometry_msgs::PoseStamped pose);
 	bool planPath(Eigen::VectorXd joints);
-//	bool planPath(Eigen::Vector3d dp_displacement);
+	bool planPath(Eigen::Vector3f plane_normal, Eigen::Vector3f major_axis, Eigen::Vector3f centroid) ;
 	
 	bool executePath(double timeout = 0.0);
 	
