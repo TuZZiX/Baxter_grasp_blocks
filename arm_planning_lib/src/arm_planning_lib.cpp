@@ -106,6 +106,12 @@ bool ArmPlanningInterface::planPath(geometry_msgs::PoseStamped pose) {
 	return true;
 }
 
+bool ArmPlanningInterface::planPath(geometry_msgs::Pose pose) {
+	geometry_msgs::PoseStamped stamped_pose;
+	stamped_pose.pose = pose;
+	return planPath(stamped_pose);
+}
+
 bool ArmPlanningInterface::planPath(Vector7d joints) {
 	ROS_INFO("requesting a joint-space motion plan");
 	cart_goal_.command_code = cwru_action::cwru_baxter_cart_moveGoal::RT_ARM_PLAN_JSPACE_PATH_CURRENT_TO_QGOAL;
@@ -224,6 +230,11 @@ geometry_msgs::PoseStamped ArmPlanningInterface::getGripperPose(void) {
 #define EXECUTE()	if(planPath(next)){ if(!executePath()) {	return false;} } else 	return false
 #define ADDPOS(a,b,c)	a.pose.position.x=b.pose.position.x+c[0],a.pose.position.y=b.pose.position.y+c[1],a.pose.position.z=b.pose.position.z+c[2]
 #define SUBPOS(a,b,c)	a.pose.position.x=b.pose.position.x-c[0],a.pose.position.y=b.pose.position.y-c[1],a.pose.position.z=b.pose.position.z-c[2]
+bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::Pose block_pose) {
+	geometry_msgs::PoseStamped pose;
+	pose.pose = block_pose;
+	return ColorMovement(color, pose);
+}
 bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStamped block_pose) {
 	geometry_msgs::PoseStamped next = block_pose;
 	if (color.compare("red")==0) {
