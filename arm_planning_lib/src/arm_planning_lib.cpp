@@ -65,7 +65,16 @@ void ArmPlanningInterface::doneCb_(const actionlib::SimpleClientGoalState& state
 //	ROS_INFO("got return value= %d", result->return_code);
 	cart_result_=*result;
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
+ros::NodeHandle n;
+ros::Publisher red_publisher = n.advertise<std_msgs::Int16>("dynamixel_motor1_cmd", 1);
+ros::Publisher blue_publisher = n.advertise<std_msgs::Int16>("dynamixel_motor1_cmd", 1);
+ros::Publisher white_publisher = n.advertise<std_msgs::Int16>("dynamixel_motor1_cmd", 1);
+ros::Publisher black_publisher = n.advertise<std_msgs::Int16>("dynamixel_motor1_cmd", 1);
+ros::Publisher green_publisher = n.advertise<std_msgs::Int16>("dynamixel_motor1_cmd", 1);
+ros::Publisher wood_publisher = n.advertise<std_msgs::Int16>("dynamixel_motor1_cmd", 1);
+   
+///////////////////////////////////////////////////////////////////////////////////////////////
 bool ArmPlanningInterface::moveArmsBack(void) {
 	/*
 	//    ROS_INFO("requesting a joint-space motion plan");
@@ -104,12 +113,6 @@ bool ArmPlanningInterface::planPath(geometry_msgs::PoseStamped pose) {
 	computed_arrival_time_= cart_result_.computed_arrival_time; //action_client.get_computed_arrival_time();
 	//    ROS_INFO("computed move time: %f",computed_arrival_time_);
 	return true;
-}
-
-bool ArmPlanningInterface::planPath(geometry_msgs::Pose pose) {
-	geometry_msgs::PoseStamped stamped_pose;
-	stamped_pose.pose = pose;
-	return planPath(stamped_pose);
 }
 
 bool ArmPlanningInterface::planPath(Vector7d joints) {
@@ -230,11 +233,6 @@ geometry_msgs::PoseStamped ArmPlanningInterface::getGripperPose(void) {
 #define EXECUTE()	if(planPath(next)){ if(!executePath()) {	return false;} } else 	return false
 #define ADDPOS(a,b,c)	a.pose.position.x=b.pose.position.x+c[0],a.pose.position.y=b.pose.position.y+c[1],a.pose.position.z=b.pose.position.z+c[2]
 #define SUBPOS(a,b,c)	a.pose.position.x=b.pose.position.x-c[0],a.pose.position.y=b.pose.position.y-c[1],a.pose.position.z=b.pose.position.z-c[2]
-bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::Pose block_pose) {
-	geometry_msgs::PoseStamped pose;
-	pose.pose = block_pose;
-	return ColorMovement(color, pose);
-}
 bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStamped block_pose) {
 	geometry_msgs::PoseStamped next = block_pose;
 	if (color.compare("red")==0) {
@@ -242,20 +240,22 @@ bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStampe
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		///  Grasp Block //TODO
+		
+                red_publisher.publish(3999);
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, next, drop_offset_left);
 		EXECUTE();
 		SUBPOS(next, next, collision_offset);
 		EXECUTE();
-		///  Drop Block //TODO
+		
+                red_publisher.publish(3000);
 	} else if (color.compare("blue")==0) {
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		///  Grasp Block //TODO
+		blue_publisher.publish(3999);
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		if(planPath(take_look_pose)){
@@ -269,39 +269,39 @@ bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStampe
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		///  Drop Block //TODO
+		blue_publisher.publish(3000);
 		
 	} else if (color.compare("white")==0) {
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		///  Grasp Block //TODO
+		white_publisher.publish(3999);
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, next, drop_offset_right);
 		EXECUTE();
 		SUBPOS(next, next, collision_offset);
 		EXECUTE();
-		///  Drop Block //TODO
+		white_publisher.publish(3000);
 	} else if (color.compare("black")==0) {
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		///  Grasp Block //TODO
+		black_publisher.publish(3999);
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		///  Drop Block //TODO
+		black_publisher.publish(3000);
 		
 	} else if (color.compare("green")==0) {
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		///  Grasp Block //TODO
+		green_publisher.publish(3999);
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		if(planPath(take_look_pose)){
@@ -317,19 +317,19 @@ bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStampe
 		EXECUTE();
 		SUBPOS(next, next, collision_offset);
 		EXECUTE();
-		///  Drop Block //TODO
+		green_publisher.publish(3000);
 		
 	} else if (color.compare("wood")==0) {
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		///  Grasp Block //TODO
+		wood_publisher.publish(3999);
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		///  Drop Block //TODO
+		wood_publisher.publish(3000);
 	}
 	return false;
 }
