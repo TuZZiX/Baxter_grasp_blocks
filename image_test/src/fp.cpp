@@ -18,7 +18,7 @@
 bool publishToScreen(ros::NodeHandle &nh){
 	image_transport::ImageTransport it(nh);
 	image_transport::Publisher pub = it.advertise("robot/xdisplay", 1);
-	cv::Mat image = cv::imread("~/hand.jpg", CV_LOAD_IMAGE_COLOR);
+	cv::Mat image = cv::imread("test.jpg", CV_LOAD_IMAGE_COLOR);
 	cv::waitKey(30);
 	sensor_msgs::ImagePtr msg;
 	msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", image).toImageMsg();

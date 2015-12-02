@@ -20,7 +20,12 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 
 # Libraries
 # cs_add_library(my_lib src/my_lib.cpp)
-   
+find_package(cwru_pcl_utils REQUIRED)
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
+  ${cwru_pcl_utils_INCLUDE_DIRS}
+)
 
 # Executables
 # cs_add_executable(example src/example.cpp)

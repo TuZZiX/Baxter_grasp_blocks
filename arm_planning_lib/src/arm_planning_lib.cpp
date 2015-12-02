@@ -312,7 +312,7 @@ bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStampe
 	}
 	return false;
 }
-bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStamped block_pose) {
+bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::Pose block_pose) {
 	geometry_msgs::PoseStamped stamp_pose;
 	stamp_pose.pose = block_pose;
 	return planPath(stamp_pose);
