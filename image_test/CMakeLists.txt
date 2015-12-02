@@ -23,9 +23,9 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 
 # Executables
 # cs_add_executable(example src/example.cpp)
-cs_add_executable(fp src/fp.cpp)
+cs_add_executable(image_test src/fp.cpp)
 # target_link_library(example my_lib)
-target_link_libraries(fp arm_planning_lib)
+target_link_libraries(image_test arm_planning_lib)
 
 cs_install()
 cs_export()
