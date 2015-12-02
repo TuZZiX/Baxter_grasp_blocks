@@ -62,20 +62,6 @@ void Pcl_grabing::update_kinect_points()
 
     //ROS_INFO_STREAM("Affine"<<endl<<A_sensor_wrt_torso.matrix()); // check Affine
 
-/*	PointCloud<pcl::PointXYZ> kinect_points;
-	transform_kinect_cloud(A_sensor_wrt_torso);
-	get_transformed_kinect_points(kinect_points);
-	pclKinect_clr_ptr_->header = kinect_points.header;
-	pclKinect_clr_ptr_->is_dense = kinect_points.is_dense;
-    pclKinect_clr_ptr_->width = kinect_points.width;
-    pclKinect_clr_ptr_->height = kinect_points.height;
-    if (pcl::io::loadPCDFile<pcl::PointXYZRGB> ("kinect_clr_snapshot.pcd", *pclKinect_clr_ptr_) == -1) //* load the file
-  	{
-   	 	PCL_ERROR ("Couldn't read file kinect_clr_snapshot.pcd \n");
-  	}
-*/
- //   pcl_wsn.get_kinect_clr_pts(*pclKinect_clr_ptr_);
- //   ROS_INFO("Load color kinect points");
 
     transform_clr_kinect_cloud(A_sensor_wrt_torso);
     ROS_INFO("transformed color kinect points");
@@ -122,8 +108,13 @@ bool Pcl_grabing::findTableTop() {
         {
             if (color_err < ColorRange) 
             {
-                index.push_back(i);
-
+                if(pt[0]>Table_X_Min && pt[0]<Table_X_Max)
+                {
+                    if(pt[0]>Table_Y_Min && pt[0]<Table_Y_Max)
+                    {
+                        index.push_back(i);    
+                    }
+                }
             }
         }
     }
@@ -272,6 +263,39 @@ bool Pcl_grabing::isBlock()
 Eigen::Vector3d Pcl_grabing::getColor()
 {
     return BlockColor;
+}
+
+int Pcl_grabing::getColor2()
+{
+    int n=0;
+    Eigen::Vector3d red,blue,black,green,b,d;
+    b=BlockColor/BlockColor.norm();
+
+    red<<188,54,100; // red
+    red=red/red.norm();
+    d=red-b;
+    if(d.norm()<Eps)
+        return n=1; // red
+
+    green<<149,212,10;
+    green/=green.norm();
+    d=green-b;
+    if(d.norm()<Eps)
+        return n=2;// green
+
+    blue<<95,212,10;
+    blue/=blue.norm();
+    d=blue-b;
+    if(d.norm()<Eps)
+        return n=3; // blue
+
+    black<<75,80,88;
+    black/=black.norm();
+    d=black-b;
+    if (d.norm()<Eps)
+        return n=4; // black
+
+    return n=0; // error
 }
 
 geometry_msgs::Pose Pcl_grabing::getBlockPose()
