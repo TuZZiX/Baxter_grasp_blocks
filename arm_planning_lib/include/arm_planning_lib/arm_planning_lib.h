@@ -32,8 +32,7 @@ private:
 	void doneCb_(const actionlib::SimpleClientGoalState& state,
 				 const cwru_action::cwru_baxter_cart_moveResultConstPtr& result);
 	geometry_msgs::Pose transformEigenAffine3dToPose(Affine3d e);
-	ros::NodeHandle n;
-        ros::Publisher gripper_publisher = n.advertise<std_msgs::Int16>("dynamixel_motor1_cmd", 1);
+	//ros::Publisher gripper_publisher = nh_.advertise<std_msgs::Int16>("dynamixel_motor1_cmd", 1);
 public:
 	ArmPlanningInterface(ros::NodeHandle* nodehandle); //define the body of the constructor outside of class definition
 	

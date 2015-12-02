@@ -92,6 +92,12 @@ bool ArmPlanningInterface::moveArmsBack(void) {
 	return true;
 }
 
+bool ArmPlanningInterface::planPath(geometry_msgs::Pose pose) {
+	geometry_msgs::PoseStamped stamp_pose;
+	stamp_pose.pose = pose;
+	return planPath(stamp_pose);
+}
+
 bool ArmPlanningInterface::planPath(geometry_msgs::PoseStamped pose) {
 	
 	//    ROS_INFO("requesting a cartesian-space motion plan");
@@ -125,26 +131,6 @@ bool ArmPlanningInterface::planPath(Vector7d joints) {
 	computed_arrival_time_= cart_result_.computed_arrival_time; //action_client.get_computed_arrival_time();
 	//    ROS_INFO("computed move time: %f",computed_arrival_time_);
 	return true;
-}
-
-geometry_msgs::Pose ArmPlanningInterface::transformEigenAffine3dToPose(Affine3d e) {
-	Vector3d Oe;
-	Matrix3d Re;
-	geometry_msgs::Pose pose;
-	Oe = e.translation();
-	Re = e.linear();
-	
-	Quaterniond q(Re); // convert rotation matrix Re to a quaternion, q
-	pose.position.x = Oe(0);
-	pose.position.y = Oe(1);
-	pose.position.z = Oe(2);
-	
-	pose.orientation.x = q.x();
-	pose.orientation.y = q.y();
-	pose.orientation.z = q.z();
-	pose.orientation.w = q.w();
-	
-	return pose;
 }
 
 bool ArmPlanningInterface::planPath(Vector3f plane_normal, Vector3f major_axis, Vector3f centroid) {
@@ -234,7 +220,7 @@ bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStampe
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
 		
-		gripper_publisher.publish(3999);
+		//gripper_publisher.publish(3999);
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, next, drop_offset_left);
@@ -242,13 +228,13 @@ bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStampe
 		SUBPOS(next, next, collision_offset);
 		EXECUTE();
 		
-		gripper_publisher.publish(3000);
+		//gripper_publisher.publish(3000);
 	} else if (color.compare("blue")==0) {
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		gripper_publisher.publish(3999);
+		//gripper_publisher.publish(3999);
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		if(planPath(take_look_pose)){
@@ -262,39 +248,39 @@ bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStampe
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		gripper_publisher.publish(3000);
+		//gripper_publisher.publish(3000);
 		
 	} else if (color.compare("white")==0) {
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		gripper_publisher.publish(3999);
+		//gripper_publisher.publish(3999);
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, next, drop_offset_right);
 		EXECUTE();
 		SUBPOS(next, next, collision_offset);
 		EXECUTE();
-		gripper_publisher.publish(3000);
+		//gripper_publisher.publish(3000);
 	} else if (color.compare("black")==0) {
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		gripper_publisher.publish(3999);
+		//gripper_publisher.publish(3999);
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		gripper_publisher.publish(3000);
+		//gripper_publisher.publish(3000);
 		
 	} else if (color.compare("green")==0) {
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		gripper_publisher.publish(3999);
+		//gripper_publisher.publish(3999);
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		if(planPath(take_look_pose)){
@@ -310,21 +296,26 @@ bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStampe
 		EXECUTE();
 		SUBPOS(next, next, collision_offset);
 		EXECUTE();
-		gripper_publisher.publish(3000);
+		//gripper_publisher.publish(3000);
 		
 	} else if (color.compare("wood")==0) {
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		gripper_publisher.publish(3999);
+		//gripper_publisher.publish(3999);
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
-		gripper_publisher.publish(3000);
+		//gripper_publisher.publish(3000);
 	}
 	return false;
+}
+bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStamped block_pose) {
+	geometry_msgs::PoseStamped stamp_pose;
+	stamp_pose.pose = block_pose;
+	return planPath(stamp_pose);
 }
 void ArmPlanningInterface::convToPose(std::vector<geometry_msgs::PoseStamped> &pose_seq, std::vector<Vector3f> &position_seq, Quaterniond &orientation) {
 	int size = (int)pose_seq.size();
@@ -338,4 +329,24 @@ void ArmPlanningInterface::convToPose(std::vector<geometry_msgs::PoseStamped> &p
 		(pose_seq[i]).pose.orientation.w = orientation.w();
 	}
 	
+}
+
+geometry_msgs::Pose ArmPlanningInterface::transformEigenAffine3dToPose(Affine3d e) {
+	Vector3d Oe;
+	Matrix3d Re;
+	geometry_msgs::Pose pose;
+	Oe = e.translation();
+	Re = e.linear();
+	
+	Quaterniond q(Re); // convert rotation matrix Re to a quaternion, q
+	pose.position.x = Oe(0);
+	pose.position.y = Oe(1);
+	pose.position.z = Oe(2);
+	
+	pose.orientation.x = q.x();
+	pose.orientation.y = q.y();
+	pose.orientation.z = q.z();
+	pose.orientation.w = q.w();
+	
+	return pose;
 }
