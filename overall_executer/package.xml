@@ -45,11 +45,17 @@
 <build_depend>geometry_msgs</build_depend>
 <build_depend>arm_planning_lib</build_depend>
 <build_depend>pcl_chen</build_depend>
+<build_depend>image_transport</build_depend>
+<build_depend>cv</build_depend>
+<build_depend>cv_brdige</build_depend>
   <run_depend>roscpp</run_depend>
 <run_depend>std_msgs</run_depend>
 <run_depend>geometry_msgs</run_depend>
 <run_depend>arm_planning_lib</run_depend>
 <run_depend>pcl_chen</run_depend>
+<run_depend>image_transport</run_depend>
+<run_depend>cv</run_depend>
+<run_depend>cv_brdige</run_depend>
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- You can specify that this package is a metapackage here: -->
