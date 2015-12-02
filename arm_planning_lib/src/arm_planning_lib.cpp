@@ -89,7 +89,7 @@ bool ArmPlanningInterface::moveArmsBack(void) {
 	} else {
 		return false;
 	}
-	return false;
+	return true;
 }
 
 bool ArmPlanningInterface::planPath(geometry_msgs::PoseStamped pose) {
@@ -234,7 +234,7 @@ bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStampe
 		ADDPOS(next, block_pose, gripper_offset);
 		EXECUTE();
 		
-                gripper_publisher.publish(3999);
+		gripper_publisher.publish(3999);
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
 		ADDPOS(next, next, drop_offset_left);
@@ -242,7 +242,7 @@ bool ArmPlanningInterface::ColorMovement(string color, geometry_msgs::PoseStampe
 		SUBPOS(next, next, collision_offset);
 		EXECUTE();
 		
-                gripper_publisher.publish(3000);
+		gripper_publisher.publish(3000);
 	} else if (color.compare("blue")==0) {
 		ADDPOS(next, block_pose, collision_offset);
 		EXECUTE();
