@@ -15,24 +15,77 @@
 //enum Color = {RED, WHITE, BLACK, GREEN, BLUE, WOODEN};
 //using namespace Eigen;
 
-bool publishToScreen(ros::NodeHandle &nh){
-	image_transport::ImageTransport it(nh);
-	image_transport::Publisher pub = it.advertise("robot/xdisplay", 1);
+void publishToScreen(ros::NodeHandle &nh){
+//	image_transport::ImageTransport it(nh);
+	ros::Publisher pub = nh.advertise<sensor_msgs::Image>("robot/xdisplay", 10, true);
+	ROS_INFO("22222");
 	cv::Mat image = cv::imread("test.jpg", CV_LOAD_IMAGE_COLOR);
 	cv::waitKey(30);
+	ROS_INFO("33333");
 	sensor_msgs::ImagePtr msg;
 	msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", image).toImageMsg();
-	pub.publish(msg);
+	ROS_INFO("44444");
+	pub.publish(*msg);
+	ROS_INFO("55555");
+	ros::Duration(3.0).sleep();
 	ros::spinOnce();
-	return true;
+}
+
+void publishToScreen2(ros::NodeHandle &nh){
+	image_transport::ImageTransport it(nh);
+	image_transport::Publisher pub = it.advertise("robot/xdisplay", 1);
+	ROS_INFO("22222");
+	cv::Mat image = cv::imread("baxterworking.png", CV_LOAD_IMAGE_COLOR);
+	cv::waitKey(30);
+	ROS_INFO("33333");
+	sensor_msgs::ImagePtr msg;
+	msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", image).toImageMsg();
+	ROS_INFO("44444");
+	pub.publish(*msg);
+	ROS_INFO("55555");
+	ros::Duration(3.0).sleep();
+	ros::spinOnce();
+}
+
+void publishToScreen3(ros::NodeHandle &nh){
+	image_transport::ImageTransport it(nh);
+	image_transport::Publisher pub = it.advertise("robot/xdisplay", 10);
+	ROS_INFO("22222");
+	cv::Mat image = cv::imread("/home/user/researchsdk.png", CV_LOAD_IMAGE_COLOR);
+	cv::waitKey(30);
+	ROS_INFO("33333");
+	sensor_msgs::ImagePtr msg;
+	msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", image).toImageMsg();
+	ROS_INFO("44444");
+	pub.publish(*msg);
+	ROS_INFO("55555");
+	ros::Duration(3.0).sleep();
+	ros::spinOnce();
 }
 
 
 int main(int argc, char** argv) {
 	ros::init(argc, argv, "final_project");
 	ros::NodeHandle nh; 
-	publishToScreen(nh);
-	ros::spinOnce();
+	ros::Rate rate(2);
+	while( ros::ok() )
+    {
+    	ROS_INFO("11111");
+    	publishToScreen(nh);
+
+//    	ROS_INFO("-------------------------------------------------------------");
+
+//    	ROS_INFO("11111");
+//    	publishToScreen2(nh);
+
+//    	ROS_INFO("-------------------------------------------------------------");
+
+//    	ROS_INFO("11111");
+//    	publishToScreen3(nh);
+    	ROS_INFO("66666");
+        rate.sleep();
+        ros::spinOnce();
+    }
 	return 0;
 }
 /*

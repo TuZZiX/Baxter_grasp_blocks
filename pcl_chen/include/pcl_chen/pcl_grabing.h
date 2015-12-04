@@ -32,6 +32,7 @@ public:
     bool checkForHand();
     bool isBlock(); //
     geometry_msgs::Pose getBlockPose(); //
+    void getBlockVector(Vector3f &plane_normal, Vector3f &major_axis, Vector3f &centroid);
     Eigen::Vector3d getColor(); //
 
     CwruPclUtils pcl_wsn;

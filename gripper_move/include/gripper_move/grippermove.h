@@ -1,9 +1,8 @@
-
-
 #ifndef GRIPPER_MOVE_H_
 #define GRIPPER_MOVE_H_
 
-#include<ros/ros.h>
+#include <ros/ros.h>
+#include <std_msgs/Int16.h>
 
 
 
@@ -16,7 +15,8 @@ public:
 
 private:
        ros::NodeHandle nh_;
-       ros::Publisher position_publisher;
+       ros::Publisher *position_publisher;
+
     
 };
 

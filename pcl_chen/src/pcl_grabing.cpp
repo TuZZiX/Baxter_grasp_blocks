@@ -293,6 +293,12 @@ geometry_msgs::Pose Pcl_grabing::getBlockPose()
     return pose;
 }
 
+void Pcl_grabing::getBlockVector(Vector3f &plane_normal, Vector3f &major_axis, Vector3f &centroid) {
+    major_axis = Block_Major;
+    plane_normal = Block_Normal;
+    centroid = BlockTopCentroid;
+}
+
 bool Pcl_grabing::checkForHand()
 {
     update_kinect_points();
@@ -325,6 +331,7 @@ bool Pcl_grabing::checkForHand()
     ROS_INFO("got hand.");
     return true;
 }
+
 
 void Pcl_grabing::display_points(PointCloud<pcl::PointXYZ> points)
 {

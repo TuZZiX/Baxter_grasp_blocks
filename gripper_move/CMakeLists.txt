@@ -4,8 +4,14 @@ project(gripper_move)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin_simple REQUIRED
+find_package(catkin_simple REQUIRED)
+find_package(cmake_modules REQUIRED)
+
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
 )
+
 catkin_simple()
 find_package(Boost REQUIRED COMPONENTS system thread)
 
@@ -105,10 +111,10 @@ cs_export()
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES gripper_move
-#  CATKIN_DEPENDS catkin_simple roscpp std_msgs
-#  DEPENDS system_lib
+  INCLUDE_DIRS include
+  #LIBRARIES gripper_move
+  #CATKIN_DEPENDS catkin_simple roscpp std_msgs
+  #DEPENDS system_lib
 )
 
 ###########
