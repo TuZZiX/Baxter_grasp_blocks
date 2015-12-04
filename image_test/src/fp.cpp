@@ -1,4 +1,5 @@
 #include <ros/ros.h>
+#include <ros/package.h> 
 //#include <geometry_msgs/Pose.h>
 //#include <cwru_msgs/Path.h>
 //#include <arm_planning_lib/arm_planning_lib.h>
@@ -12,25 +13,26 @@
 #include <Eigen/Eigenvalues>
 #include <string>
 
+using namespace std;
 //enum Color = {RED, WHITE, BLACK, GREEN, BLUE, WOODEN};
 //using namespace Eigen;
 
-void publishToScreen(ros::NodeHandle &nh){
+void publishToScreen(ros::NodeHandle &nh, string path){
 //	image_transport::ImageTransport it(nh);
+	string pkg_path = ros::package::getPath("overall_executer");
+	string append = "/image/";
+	string full_path = pkg_path+append+path;
+	ROS_INFO("%s",full_path.c_str());
 	ros::Publisher pub = nh.advertise<sensor_msgs::Image>("robot/xdisplay", 10, true);
-	ROS_INFO("22222");
-	cv::Mat image = cv::imread("test.jpg", CV_LOAD_IMAGE_COLOR);
+	cv::Mat image = cv::imread(full_path, CV_LOAD_IMAGE_COLOR);
 	cv::waitKey(30);
-	ROS_INFO("33333");
 	sensor_msgs::ImagePtr msg;
 	msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", image).toImageMsg();
-	ROS_INFO("44444");
 	pub.publish(*msg);
-	ROS_INFO("55555");
-	ros::Duration(3.0).sleep();
+	ros::Duration(1.0).sleep();
 	ros::spinOnce();
 }
-
+/*
 void publishToScreen2(ros::NodeHandle &nh){
 	image_transport::ImageTransport it(nh);
 	image_transport::Publisher pub = it.advertise("robot/xdisplay", 1);
@@ -61,7 +63,7 @@ void publishToScreen3(ros::NodeHandle &nh){
 	ROS_INFO("55555");
 	ros::Duration(3.0).sleep();
 	ros::spinOnce();
-}
+}*/
 
 
 int main(int argc, char** argv) {
@@ -70,8 +72,7 @@ int main(int argc, char** argv) {
 	ros::Rate rate(2);
 	while( ros::ok() )
     {
-    	ROS_INFO("11111");
-    	publishToScreen(nh);
+    	publishToScreen(nh,"test.jpg");
 
 //    	ROS_INFO("-------------------------------------------------------------");
 
@@ -82,7 +83,6 @@ int main(int argc, char** argv) {
 
 //    	ROS_INFO("11111");
 //    	publishToScreen3(nh);
-    	ROS_INFO("66666");
         rate.sleep();
         ros::spinOnce();
     }

@@ -1,6 +1,6 @@
 #ifndef ARM_PLANNING_INTERFACE_H_
 #define ARM_PLANNING_INTERFACE_H_
-
+#define GAZEBO
 
 #include <ros/ros.h>
 #include <actionlib/client/simple_action_client.h>

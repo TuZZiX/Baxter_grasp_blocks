@@ -9,33 +9,139 @@ cart_move_action_client_("cartMoveActionServer", true), gripper(&nh_) { // const
 		server_exists = cart_move_action_client_.waitForServer(ros::Duration(0.5)); //
 		ros::spinOnce();
 		ros::Duration(0.5).sleep();
-		//       ROS_INFO("retrying...");
+		       ROS_INFO("retrying...");
 	}
 	ROS_INFO("connected to action server"); // if here, then we connected to the server;
 	collision_offset << 0, 0, 0.32870648723;
 	gripper_offset << 0, 0, 0.17665179565;
-	//	arm_back_joints << -0.20628314186274055, -1.0357409957184627, -0.5780814380569512, 1.3172378913039648, 1.7037512511889998, 1.2374043903744254, 1.6265004725741392;
-	arm_back_pose.pose.position.x = 0.628566212076;
-	arm_back_pose.pose.position.y = -0.347307547123;
-	arm_back_pose.pose.position.z = 0.350523968221;
-	arm_back_pose.pose.orientation.x = 0.630141382934;
-	arm_back_pose.pose.orientation.y = 0.775598336984;
-	arm_back_pose.pose.orientation.z = 0.000519772148981;
-	arm_back_pose.pose.orientation.w = 0.0369971217577;
+		arm_back_joints << -0.20628314186274055, -1.0357409957184627, -0.5780814380569512, 1.3172378913039648, 1.7037512511889998, 1.2374043903744254, 1.6265004725741392;
+	arm_back_pose.pose.position.x = 0.502562210574;
+	arm_back_pose.pose.position.y = -0.426721658001;
+	arm_back_pose.pose.position.z = 0.494329081831;
+	arm_back_pose.pose.orientation.x = 0.996042333102;
+	arm_back_pose.pose.orientation.y = -0.0659733739743;
+	arm_back_pose.pose.orientation.z = 0.0202067368718;
+	arm_back_pose.pose.orientation.w = -0.0560256403855;
 	
 	//drop_offset_left << -0.627811922278, -0.37037794008, -0.01957099178;
 	drop_offset_left << -0.1, -0.2, 0;
 	//drop_offset_right << -0.02005453231, 0.29488994572, 0.00129911747;
 	drop_offset_right << 0.1, 0.2, 0;
 	//	take_look_pose << -0.18503156094537968, 0.44527797626583865, 0.36021593694382065, 1.827325037963473, 1.0199002550686511, 1.0137709796128629, 1.2701787563643496;
-	take_look_pose.pose.position.x = 0.52542198926;
-	take_look_pose.pose.position.y = -0.19065849761;
-	take_look_pose.pose.position.z = 0.154626356725;
-	take_look_pose.pose.orientation.x = -0.249821685981;
-	take_look_pose.pose.orientation.y = -0.335221027398;
-	take_look_pose.pose.orientation.z = -0.504147162678;
-	take_look_pose.pose.orientation.w = 0.755679579166;
+	take_look_pose.pose.position.x = 0.51056007657;
+	take_look_pose.pose.position.y = -0.268660722202;
+	take_look_pose.pose.position.z = 0.206178622308;
+	take_look_pose.pose.orientation.x = -0.448836366006;
+	take_look_pose.pose.orientation.y = 0.0150078334373;
+	take_look_pose.pose.orientation.z = -0.0668611258114;
+	take_look_pose.pose.orientation.w = 0.890982755917;
 	
+
+	/*
+  position: 
+    x: 0.474638345656
+    y: -0.530914882425
+    z: 0.334927883254
+  orientation: 
+    x: 0.923479271936
+    y: -0.29644683115
+    z: -0.242660162444
+    w: -0.0205269619692
+	*/
+
+	/*
+pre_grab
+pose: 
+  position: 
+    x: 0.62630899645
+    y: -0.00805334156627
+    z: 0.206422664913
+  orientation: 
+    x: 0.629827329351
+    y: 0.776484996568
+    z: 0.0187988533019
+    w: -0.00593198287789
+
+grab
+pose: 
+  position: 
+    x: 0.627811922278
+    y: -0.00340972086974
+    z: 0.0543679733262
+  orientation: 
+    x: 0.629826654045
+    y: 0.776525376337
+    z: 0.0171547560392
+    w: -0.0056956215282
+
+drop_left
+  position: 
+    x: 0.618217876627
+    y: -0.373787660953
+    z: 0.0347969815439
+  orientation: 
+    x: 0.629429968147
+    y: 0.776821296576
+    z: 0.0183006089831
+    w: -0.00562815199012
+
+drop_right
+  position: 
+    x: 0.607757389961
+    y: 0.29148022485
+    z: 0.0556670907964
+  orientation: 
+    x: 0.629136911805
+    y: 0.777105813518
+    z: 0.0147144639623
+    w: -0.00876272515292
+
+gripper at table top
+  position: 
+    x: 0.575521702564
+    y: -0.22915244597
+    z: 0.0475048224968
+  orientation: 
+    x: 0.62945411565
+    y: 0.776795019467
+    z: 0.0183889186523
+    w: -0.00623391483899
+
+hand at table top
+pose: 
+  position: 
+    x: 0.578822113329
+    y: -0.222901535766
+    z: -0.129146973155
+  orientation: 
+    x: 0.629548500816
+    y: 0.776861010357
+    z: 0.00458504421153
+    w: 0.0116031494482
+take a look
+pose: 
+  position: 
+    x: 0.52542198926
+    y: -0.19065849761
+    z: 0.154626356725
+  orientation: 
+    x: -0.249821685981
+    y: -0.335221027398
+    z: -0.504147162678
+    w: 0.755679579166
+
+bakc to start
+pose: 
+  position: 
+    x: 0.628566212076
+    y: -0.347307547123
+    z: 0.350523968221
+  orientation: 
+    x: 0.630141382934
+    y: 0.775598336984
+    z: 0.000519772148981
+    w: 0.0369971217577
+*/
 	pre_grab_pose.pose.position.x = 0.62630899645;
 	pre_grab_pose.pose.position.y = -0.00805334156627;
 	pre_grab_pose.pose.position.z = 0.206422664913;
@@ -59,14 +165,25 @@ cart_move_action_client_("cartMoveActionServer", true), gripper(&nh_) { // const
 
 	take_look_joints << -0.18503156094537968, 0.44527797626583865, 0.36021593694382065, 1.827325037963473, 1.0199002550686511, 1.0137709796128629, 1.2701787563643496;
 
+#ifdef REAL_WORLD
+	global_pose_offset.pose.position.x = 0.027923865;
+	global_pose_offset.pose.position.y = 0.104193224;
+	global_pose_offset.pose.position.z = 0.159401199;
+	global_pose_offset.pose.orientation.x = 0.072563061;
+	global_pose_offset.pose.orientation.y = 0.230473457;
+	global_pose_offset.pose.orientation.z = 0.262866899;
+	global_pose_offset.pose.orientation.w = -0.035498678;
+#endif
 
+#ifdef GAZEBO
 	global_pose_offset.pose.position.x = 0;
 	global_pose_offset.pose.position.y = 0;
-	global_pose_offset.pose.position.z = 0;
+	global_pose_offset.pose.position.z = -0.2;
 	global_pose_offset.pose.orientation.x = 0;
 	global_pose_offset.pose.orientation.y = 0;
 	global_pose_offset.pose.orientation.z = 0;
 	global_pose_offset.pose.orientation.w = 0;
+#endif
 
 	global_joints_offset << 0,0,0,0,0,0,0;
 
@@ -99,7 +216,7 @@ bool ArmPlanningInterface::moveArmsBack(void) {
 	return true;
 	*/
 	gripper.gripper_open();
-	if(planPath(arm_back_joints)){
+	if(planPath(arm_back_pose)){
 		if(!executePath()) {
 			return false;
 		}
@@ -362,7 +479,7 @@ bool ArmPlanningInterface::colorMovement(string color, geometry_msgs::PoseStampe
 bool ArmPlanningInterface::colorMovement(string color, geometry_msgs::Pose block_pose) {
 	geometry_msgs::PoseStamped stamp_pose;
 	stamp_pose.pose = block_pose;
-	return planPath(stamp_pose);
+	return colorMovement(color,stamp_pose);
 }
 void ArmPlanningInterface::convToStampPose(std::vector<geometry_msgs::PoseStamped> &pose_seq, std::vector<Vector3f> &position_seq, Quaterniond &orientation) {
 	int size = (int)pose_seq.size();

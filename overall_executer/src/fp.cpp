@@ -1,4 +1,5 @@
 #include <ros/ros.h>
+#include <ros/package.h> 
 #include <geometry_msgs/Pose.h>
 #include <cwru_msgs/Path.h>
 #include <arm_planning_lib/arm_planning_lib.h>
@@ -23,23 +24,23 @@ string determineColor(Eigen::Vector3d color){
 
 
 
-	if(r<25 && g<25 && b<25){
+	if(r<110 && g<110 && b<110){
 		return "black";
 	}
 
-	if(r>230 && g>230 && b>230){
+	if(r>200 && g>200 && b>200){
 		return "white";
 	}
 
-	if(r>230){
+	if(r>200){
 		return "red";
 	}
 
-	if(b>230){
+	if(b>200){
 		return "blue";
 	}
 
-	if(g>230){
+	if(g>200){
 		return "green";
 	}
 
@@ -58,23 +59,30 @@ string determineColor(Eigen::Vector3d color){
 	}
 }*/
 
-void publishToScreen(ros::NodeHandle &nh){
-	/*
+void publishToScreen(ros::NodeHandle &nh, string path){
+//	image_transport::ImageTransport it(nh);
+	string pkg_path = ros::package::getPath("overall_executer");
+	string append = "/image/";
+	string full_path = pkg_path+append+path;
+	ROS_INFO("%s",full_path.c_str());
 	ros::Publisher pub = nh.advertise<sensor_msgs::Image>("robot/xdisplay", 10, true);
-	cv::Mat image = cv::imread("test.jpg", CV_LOAD_IMAGE_COLOR);
+	cv::Mat image = cv::imread(full_path, CV_LOAD_IMAGE_COLOR);
 	cv::waitKey(30);
 	sensor_msgs::ImagePtr msg;
 	msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", image).toImageMsg();
-	pub.publish(*msg);*/
-	ros::Duration(3.0).sleep();
+	pub.publish(*msg);
+	ros::Duration(1.0).sleep();
 	ros::spinOnce();
 }
 
 int main(int argc, char** argv){
-	ros::init(argc, argv, "final_project");
+	ros::init(argc, argv, "overall_executer");
 	ros::NodeHandle nh; 
 	Pcl_grabing pcl(&nh);
+	ROS_INFO("check point 0");
 	ArmPlanningInterface planner(&nh);
+	ROS_INFO("check point 1");
+
 	//connection to the robot
 	geometry_msgs::Pose blockPose;
 	Vector3f plane_normal, major_axis, centroid;
@@ -95,7 +103,7 @@ int main(int argc, char** argv){
 	bool searching = true;
 	bool handPresent = false;
 	bool wasHand = false;
-	publishToScreen(nh);
+	publishToScreen(nh, "test.jpg");
 	ROS_INFO("check point 2");
 	while(searching){
 		/*
@@ -104,7 +112,7 @@ int main(int argc, char** argv){
 			ROS_INFO("check point 3");
 		}
 		if(!handPresent){
-			publishToScreen(nh);
+			publishToScreen(nh, "test.jpg");
 			ROS_INFO("check point 4");
 		}
 		if(handPresent && !wasHand){
@@ -118,7 +126,7 @@ int main(int argc, char** argv){
 				handPresent = false;
 				wasHand = false;
 				ROS_INFO("Block not found after hand signal. Waiting for next hand signal.\n");
-				publishToScreen(nh);
+				publishToScreen(nh, "test.jpg");
 				ros::spinOnce();
 				continue;
 				ROS_INFO("check point 6");
@@ -138,7 +146,7 @@ int main(int argc, char** argv){
 			//cwru_msgs::Pose robotPose = getCurrentPose();
 			
 			ROS_INFO("%s Block found on table. Beginning planning.\n",c.c_str());
-			bool success;
+			bool success = false;
 			/*
 			bool success = planner.planPath(blockPose);
 			ROS_INFO("check point 10");
@@ -157,7 +165,7 @@ int main(int argc, char** argv){
 				handPresent = false;
 				wasHand = false;
 				planner.moveArmsBack();
-				publishToScreen(nh);
+				publishToScreen(nh, "test.jpg");
 				ROS_INFO("check point 13");
 				ros::spinOnce();
 				continue;
@@ -185,7 +193,7 @@ int main(int argc, char** argv){
 				handPresent = false;
 				//planner.releaseBlock();
 				planner.moveArmsBack();
-				publishToScreen(nh);
+				publishToScreen(nh, "test.jpg");
 				ROS_INFO("check point 15");
 				ros::spinOnce();
 				continue;
@@ -200,7 +208,7 @@ int main(int argc, char** argv){
 				handEntered = false;
 				releaseBlock();
 				planner.moveArmsBack();
-				publishToScreen(nh);
+				publishToScreen(nh, "test.jpg");
 				ros::spinOnce();
 				continue;
 			}*/
