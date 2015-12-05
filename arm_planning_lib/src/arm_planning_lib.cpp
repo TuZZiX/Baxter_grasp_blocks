@@ -13,8 +13,16 @@ cart_move_action_client_("cartMoveActionServer", true), gripper(&nh_) { // const
 	}
 	ROS_INFO("connected to action server"); // if here, then we connected to the server;
 	collision_offset << 0, 0, 0.32870648723;
-	gripper_offset << 0, 0, 0.17665179565;
-		arm_back_joints << -0.20628314186274055, -1.0357409957184627, -0.5780814380569512, 1.3172378913039648, 1.7037512511889998, 1.2374043903744254, 1.6265004725741392;
+	gripper_offset << -0.030, 0, 0.120;
+	/*gripper_pose.pose.position.x = ;
+	gripper_pose.pose.position.y =;
+	gripper_pose.pose.position.z =;
+	gripper_pose.pose.orientation.x =;
+	gripper_pose.pose.orientation.y =;
+	gripper_pose.pose.orientation.z =;
+	gripper_pose.pose.orientation.w =;
+*/
+	arm_back_joints << -0.20628314186274055, -1.0357409957184627, -0.5780814380569512, 1.3172378913039648, 1.7037512511889998, 1.2374043903744254, 1.6265004725741392;
 	arm_back_pose.pose.position.x = 0.502562210574;
 	arm_back_pose.pose.position.y = -0.426721658001;
 	arm_back_pose.pose.position.z = 0.494329081831;

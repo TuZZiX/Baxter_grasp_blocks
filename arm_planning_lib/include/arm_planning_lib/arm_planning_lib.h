@@ -52,6 +52,7 @@ public:
 	geometry_msgs::PoseStamped grab_pose;
 
 	Vector3d gripper_offset;
+	geometry_msgs::PoseStamped gripper_pose;
 	Vector3d collision_offset;
 	Vector3d drop_offset_left;
 	Vector3d drop_offset_right;

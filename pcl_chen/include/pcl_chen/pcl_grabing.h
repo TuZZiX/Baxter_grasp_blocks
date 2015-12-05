@@ -12,17 +12,47 @@
 #include <Eigen/Geometry>
 #include <Eigen/Eigenvalues>
 
+#define GAZEBO
+
+
+
+#ifdef GAZEBO
 #define roughHeight -0.15
 #define HeightRange 0.05
 #define roughColor_R 74
 #define roughColor_G 138
 #define roughColor_B 169
 #define ColorRange 10
+#define Table_X_Min -10
+#define Table_X_Max 10
+#define Table_Y_Min -10
+#define Table_Y_Max 10
+#define Eps 0.15 
 #define TableRadius 0.4
 #define HandMinHeight 0.1
 #define BlockMaxHeight 0.1
 #define BlockTopRadius 0.006
 #define BlockRadius 0.05
+#endif
+
+#ifdef REAL_WORLD
+#define roughHeight -0.129	//table Height
+#define HeightRange 0.05	//table searching z range
+#define roughColor_R 140	//table color
+#define roughColor_G 120
+#define roughColor_B 120
+#define ColorRange 60		//table color tor
+#define Table_X_Min 0.38		//table searching x and y range
+#define Table_X_Max 1.15
+#define Table_Y_Min -0.35
+#define Table_Y_Max 0.35
+#define Eps 0.15 			//
+#define TableRadius 0.25	//table r
+#define HandMinHeight 0.1	//
+#define BlockMaxHeight 0.1
+#define BlockTopRadius 0.006
+#define BlockRadius 0.05
+#endif
 
 class Pcl_grabing
 {

@@ -122,7 +122,13 @@ bool Pcl_grabing::findTableTop() {
         {
             if (color_err < ColorRange) 
             {
-                index.push_back(i);
+                if(pt[0]>Table_X_Min && pt[0]<Table_X_Max)
+                {
+                    if(pt[1]>Table_Y_Min && pt[1]<Table_Y_Max)
+                    {
+                        index.push_back(i);    
+                    }
+                }
 
             }
         }
