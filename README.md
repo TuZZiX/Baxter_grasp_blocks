@@ -15,19 +15,19 @@ This repository is for the robotice final project
 
 #To run code:
 
-**To run in gazebo:**
+**In gazebo:**
 
-'roslaunch cwru_baxter_sim baxter_world.launch'
+`roslaunch cwru_baxter_sim baxter_world.launch`
 
-'roslaunch overall_executer overall_executer.launch'
+`roslaunch overall_executer overall_executer.launch`
 
-change the #define in arm_planning_lib and pcl_chen to GAZEBO
+change the #define in arm_planning_lib and pcl_chen to *GAZEBO*
 
-**To run in real baxter:**
+**On real robot:**
 
-'roslaunch overall_executer kinect_gripper.launch'
+`roslaunch overall_executer kinect_gripper.launch`
 
-'roslaunch overall_executer overall_executer.launch'
+`roslaunch overall_executer overall_executer.launch`
 
-change the #define in arm_planning_lib and pcl_chen to REAL_WORLD
+change the #define in arm_planning_lib and pcl_chen to *REAL_WORLD*
 
