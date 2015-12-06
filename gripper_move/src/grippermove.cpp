@@ -1,5 +1,9 @@
 #include <gripper_move/grippermove.h>
 
+#define WSN
+
+
+#ifdef WSN
 
 int curpo=0;
 GripperMove::GripperMove(ros::NodeHandle* nodehandle) : nh_(*nodehandle){
@@ -12,9 +16,6 @@ GripperMove::GripperMove(ros::NodeHandle* nodehandle) : nh_(*nodehandle){
 	//keep track of current position
 	curpo = 3000;
 }
-
-
-
 void GripperMove::gripper_open(){
 	std_msgs::Int16 position;
 	position.data = 3200;
@@ -44,3 +45,20 @@ void GripperMove::gripper_close(){
 
 	curpo = 4000;*/
 }
+#endif
+
+#ifdef MARC
+
+GripperMove::GripperMove(ros::NodeHandle* nodehandle) : nh_(*nodehandle){
+
+}
+
+void GripperMove::gripper_open(){
+
+}
+
+
+void GripperMove::gripper_close(){
+
+}
+#endif
