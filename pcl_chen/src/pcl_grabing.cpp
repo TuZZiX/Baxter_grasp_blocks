@@ -47,7 +47,12 @@ void Pcl_grabing::update_kinect_points()
         try {
             // The direction of the transform returned will be from the target_frame to the source_frame. 
             // Which if applied to data, will transform data in the source_frame into the target_frame. See tf/CoordinateFrameConventions#Transform_Direction
+            #ifdef GAZEBO
             tf_listener.lookupTransform("torso", "kinect_pc_frame", ros::Time(0), tf_sensor_frame_to_torso_frame);
+            #endif
+            #ifdef REAL_WORLD
+            tf_listener.lookupTransform("torso", "camera_rgb_optical_frame", ros::Time(0), tf_sensor_frame_to_torso_frame);
+            #endif
         } catch (tf::TransformException &exception) {
             ROS_ERROR("%s", exception.what());
             tferr = true;
@@ -152,7 +157,7 @@ bool Pcl_grabing::findTableTop() {
     }
     ROS_INFO("display_point conversed.");
 
-    display_points(*display_ptr_); 
+    //display_points(*display_ptr_); 
     
     TableCentroid =pcl_wsn.compute_centroid(display_ptr_);
     TableHeight = TableCentroid(2);
@@ -182,10 +187,21 @@ bool Pcl_grabing::isBlock()
         if(distance < TableRadius)
             if(pt[2]>(TableHeight+0.003) && pt[2]<BlockMaxHeight)
             {
-                index.push_back(i);
+                double r, g, b, color_err;
+                r = transformed_pclKinect_clr_ptr_->points[i].r;
+                g = transformed_pclKinect_clr_ptr_->points[i].g;
+                b = transformed_pclKinect_clr_ptr_->points[i].b;
+                r = abs(roughColor_R - r);
+                g = abs(roughColor_G - g);
+                b = abs(roughColor_B - b);
+                color_err = r+g+b;
+                if (color_err > ColorRange)
+                {
+                    index.push_back(i);
                 BlockColor(0)+=transformed_pclKinect_clr_ptr_->points[i].r;
                 BlockColor(1)+=transformed_pclKinect_clr_ptr_->points[i].g;
                 BlockColor(2)+=transformed_pclKinect_clr_ptr_->points[i].b;
+                }
             }
     }
     int n_block_points = index.size();
@@ -207,7 +223,7 @@ bool Pcl_grabing::isBlock()
     {
         display_ptr_->points[i].getVector3fMap() = transformed_pclKinect_clr_ptr_->points[index[i]].getVector3fMap();
     }
-    display_points(*display_ptr_);
+    //display_points(*display_ptr_);
     
     Eigen::Vector3f BlockCentroid;
     BlockCentroid =pcl_wsn.compute_centroid(display_ptr_);
@@ -344,6 +360,7 @@ void Pcl_grabing::display_points(PointCloud<pcl::PointXYZ> points)
 	sensor_msgs::PointCloud2 pcl2_display_cloud;
     pcl::toROSMsg(points, pcl2_display_cloud);
     pcl2_display_cloud.header.stamp = ros::Time::now();
+    pcl2_display_cloud.header.frame_id = "torso";
     points_publisher.publish(pcl2_display_cloud);
 }
 
