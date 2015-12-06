@@ -10,4 +10,6 @@
 
 <node pkg="baxter_cartesian_moves" type="baxter_cart_move_as" name="baxter_cart_move_as"/>
 
+<node pkg="baxter_gripper" type="dynamixel_motor_node" name="dynamixel_motor_node"/>
+
 </launch>

@@ -1,0 +1,7 @@
+<launch>
+
+<include file="$(find cwru_baxter_launch)/kinect.launch" />
+
+<include file="$(find cwru_baxter_launch)/yale_gripper_xform.launch" />
+
+</launch>

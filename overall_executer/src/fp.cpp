@@ -24,40 +24,28 @@ string determineColor(Eigen::Vector3d color){
 
 
 
-	if(r<110 && g<110 && b<110){
+	if(r<80 && g<80 && b<80){
 		return "black";
 	}
 
-	if(r>200 && g>200 && b>200){
-		return "white";
+	if(r>200 && g>200 && b>180){
+		return "wood";
 	}
 
-	if(r>200){
+	if(r>160 && g<80 && b<110){
 		return "red";
 	}
 
-	if(b>200){
+	if(b>160 && r<130 && g>80 && g<180){
 		return "blue";
 	}
 
-	if(g>200){
+	if(g>160 && r>80 && r<180 && b<100){
 		return "green";
 	}
 
-	return "wood";
+	return "white";
 }
-
-/*bool planColorPath(Color c, cwru_msgs::Pose curPose){
-	switch(c){
-		case RED: return planRedMovement(curPose);
-		case BLUE: return planBlueMovement(curPose);
-		case BLACK: return planBlackMovement(curPose);
-		case WHITE: return planWhiteMovement(curPose);
-		case WOODEN: return planWoodMovement(curPose);
-		case GREEN: return planGreenMovement(curPose);
-		default: return false;
-	}
-}*/
 
 void publishToScreen(ros::NodeHandle &nh, string path){
 //	image_transport::ImageTransport it(nh);
@@ -79,9 +67,7 @@ int main(int argc, char** argv){
 	ros::init(argc, argv, "overall_executer");
 	ros::NodeHandle nh; 
 	Pcl_grabing pcl(&nh);
-	ROS_INFO("check point 0");
 	ArmPlanningInterface planner(&nh);
-	ROS_INFO("check point 1");
 
 	//connection to the robot
 	geometry_msgs::Pose blockPose;
@@ -95,7 +81,6 @@ int main(int argc, char** argv){
 	while(!table){
 		table = pcl.findTableTop();
 		ros::spinOnce();
-		ROS_INFO("check point 1");
 	}//nothing will happen until the table is found
 	ROS_INFO("Table top found. Now waiting for hand signal to begin.\n");
 
@@ -104,7 +89,6 @@ int main(int argc, char** argv){
 	bool handPresent = false;
 	bool wasHand = false;
 	publishToScreen(nh, "test.jpg");
-	ROS_INFO("check point 2");
 	while(searching){
 		/*
 		if(!handPresent){
@@ -129,44 +113,36 @@ int main(int argc, char** argv){
 				publishToScreen(nh, "test.jpg");
 				ros::spinOnce();
 				continue;
-				ROS_INFO("check point 6");
 			}
 			
 			//blockPose = pcl.getBlockPose();
 			pcl.getBlockVector(plane_normal, major_axis, centroid);
 			blockPose = planner.convToPose(plane_normal, major_axis, centroid);
 
-			ROS_INFO("check point 7");
 			//std_msgs::Float64 width = getWidth();
 			//std_msgs::Float64 height = getHeight();
 			Eigen::Vector3d color = pcl.getColor();
-			ROS_INFO("check point 8");
 			string c = determineColor(color);
-			ROS_INFO("check point 9");
 			//cwru_msgs::Pose robotPose = getCurrentPose();
 			
 			ROS_INFO("%s Block found on table. Beginning planning.\n",c.c_str());
 			bool success = false;
 			/*
 			bool success = planner.planPath(blockPose);
-			ROS_INFO("check point 10");
 			while(!success){
 				success = planner.planPath(blockPose);
-				ROS_INFO("check point 11");
 				ros::spinOnce();
 			}
 			
 			ROS_INFO("Path to block successfully planned.\n");
 			
 			success = planner.executePath();
-			ROS_INFO("check point 12");
 			if(!success){
 				ROS_INFO("Path failed to execute. \nRestarting process. \nWaiting for hand signal\n");
 				handPresent = false;
 				wasHand = false;
 				planner.moveArmsBack();
 				publishToScreen(nh, "test.jpg");
-				ROS_INFO("check point 13");
 				ros::spinOnce();
 				continue;
 			}
@@ -181,7 +157,6 @@ int main(int argc, char** argv){
 			*/
 
 			ROS_INFO("POSE: X = %f, Y = %f, Z = %f, orientation: X = %f, Y = %f, Z = %f, W = %f", blockPose.position.x, blockPose.position.y, blockPose.position.z, blockPose.orientation.x, blockPose.orientation.y, blockPose.orientation.z, blockPose.orientation.w);
-			ROS_INFO("check point 14");
 			//ROS_INFO("Block successfully grabbed. Planning movement for block.\n");
 			
 			//robotPose = getCurrentPose();
@@ -194,7 +169,6 @@ int main(int argc, char** argv){
 				//planner.releaseBlock();
 				planner.moveArmsBack();
 				publishToScreen(nh, "test.jpg");
-				ROS_INFO("check point 15");
 				ros::spinOnce();
 				continue;
 			} else {

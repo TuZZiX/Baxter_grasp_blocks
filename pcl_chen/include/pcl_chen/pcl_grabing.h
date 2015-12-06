@@ -12,7 +12,7 @@
 #include <Eigen/Geometry>
 #include <Eigen/Eigenvalues>
 
-#define GAZEBO
+#define REAL_WORLD
 
 
 
@@ -36,21 +36,21 @@
 #endif
 
 #ifdef REAL_WORLD
-#define roughHeight -0.129	//table Height
-#define HeightRange 0.05	//table searching z range
+#define roughHeight -0.136//-0.129	//table Height  -0.223366
+#define HeightRange 0.03	//table searching z range
 #define roughColor_R 140	//table color
 #define roughColor_G 120
 #define roughColor_B 120
 #define ColorRange 60		//table color tor
-#define Table_X_Min 0.38		//table searching x and y range
-#define Table_X_Max 1.15
-#define Table_Y_Min -0.35
-#define Table_Y_Max 0.35
+#define Table_X_Min 0.3		//table searching x and y range
+#define Table_X_Max 1.2
+#define Table_Y_Min -0.5
+#define Table_Y_Max 0.5
 #define Eps 0.15 			//
-#define TableRadius 0.25	//table r
+#define TableRadius 0.35	//table r
 #define HandMinHeight 0.1	//
 #define BlockMaxHeight 0.1
-#define BlockTopRadius 0.006
+#define BlockTopRadius 0.008
 #define BlockRadius 0.05
 #endif
 

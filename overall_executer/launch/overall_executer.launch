@@ -1,0 +1,7 @@
+<launch>
+
+<include file="$(find arm_planning_lib)/launch/arm_planning_lib.launch" />
+
+<node pkg="overall_executer" type="overall_executer" name="overall_executer" output="screen"/>
+
+</launch>
