@@ -18,11 +18,11 @@ int main(int argc, char** argv)
     Pcl_grabing cwru_pcl_utils(&nh);
     ROS_INFO("Instantiation done.");
 	bool ret;
-    while(!cwru_pcl_utils.findTableTop());
+
     while(ros::ok())
     {
 
-        
+        //ret = cwru_pcl_utils.findTableTop();
         //ROS_WARN("findTableTop return %s",ret?"successed":"failed");
         ret = cwru_pcl_utils.isBlock();
         ROS_WARN("isBlock return %s",ret?"successed":"failed");
