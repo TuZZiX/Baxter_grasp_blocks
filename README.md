@@ -3,22 +3,12 @@
 
 This repository is for the robotice final project
 
-#Collaborators:
+Collaborators:
 
-	Shipei Tian: Arm motion planning lib, team leader
+	Shipei Tian
 
-	Zhiang Chen: Block, surface and hand recognizing based on PCL
+	Zhiang Chen
 
-	Alex DeFiore: Main program
+	Alex DeFiore
 
-	Qian Wang: Gripper
-
-#To run code:
-
-(if in gazebo:) 'roslaunch cwru_baxter_sim baxter_world.launch'
-
-'roslaunch overall_executer kinect_gripper.launch'
-
-'roslaunch overall_executer overall_executer.launch'
-
-
+	Qian Wang

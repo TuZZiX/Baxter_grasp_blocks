@@ -1,5 +1,6 @@
 #ifndef ARM_PLANNING_INTERFACE_H_
 #define ARM_PLANNING_INTERFACE_H_
+#define GAZEBO
 
 #include <ros/ros.h>
 #include <actionlib/client/simple_action_client.h>
@@ -12,12 +13,10 @@
 #include <string>
 //#include <baxter_traj_streamer/baxter_traj_streamer.h>
 
-#define REAL_WORLD
 using namespace std;  //just to avoid requiring std::,  ...
 using namespace Eigen;
 typedef Matrix<double, 7, 1> Vector7d;
-#define MOTION_TIME 3.0
-#define GRIPPER_TIME 10.0
+
 
 class ArmPlanningInterface {
 private:
@@ -78,7 +77,7 @@ public:
 	bool colorMovement(string color, geometry_msgs::PoseStamped block_pose);
 	bool colorMovement(string color, geometry_msgs::Pose block_pose);
 	
-	bool takeALook(){if(planPath(take_look_pose)){ if(!executePath()) {	return false;} } else 	return false;}
+	bool takeALook(){if(planPath(take_look_joints)){ if(!executePath()) {	return false;} } else 	return false;}
 
 	void convToStampPose(std::vector<geometry_msgs::PoseStamped> &pose_seq, std::vector<Vector3f> &position_seq, Quaterniond &orientation);
 	geometry_msgs::PoseStamped convToStampPose(Vector3f plane_normal, Vector3f major_axis, Vector3f centroid);

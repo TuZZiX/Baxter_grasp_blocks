@@ -29,9 +29,9 @@ include_directories(
 
 # Executables
 # cs_add_executable(example src/example.cpp)
-cs_add_executable(overall_executer src/fp.cpp)
+cs_add_executable(fp src/fp.cpp)
 # target_link_library(example my_lib)
-target_link_libraries(overall_executer arm_planning_lib pcl_chen)
+target_link_libraries(fp arm_planning_lib pcl_chen)
 
 cs_install()
 cs_export()

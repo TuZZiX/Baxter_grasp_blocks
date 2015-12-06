@@ -17,30 +17,22 @@ GripperMove::GripperMove(ros::NodeHandle* nodehandle) : nh_(*nodehandle){
 
 void GripperMove::gripper_open(){
 	std_msgs::Int16 position;
-	position.data = 3200;
-	(*position_publisher).publish(position);
-	/*
-	std_msgs::Int16 position;
-	for(int i=curpo;i>=3000; i-=10){
+	for(int i=curpo;i>=3000;i--){
 		position.data=i;
 		(*position_publisher).publish(position);
-		ros::Duration(0.002).sleep(); 
+		ros::Duration(.0005).sleep(); 
 	};
-	curpo=3000;*/
+	curpo=3000;
 }
 
 
 void GripperMove::gripper_close(){
 	std_msgs::Int16 position;
-	position.data = 3999;
-	(*position_publisher).publish(position);
-/*
-	std_msgs::Int16 position;
-	for(int i = curpo; i<=4000; i+=10){
+	for(int i = curpo; i<=3900; i++){
 		position.data = i;
 		(*position_publisher).publish(position);
-		ros::Duration(0.002).sleep(); 
+		ros::Duration(.0005).sleep(); 
 	}
 
-	curpo = 4000;*/
+	curpo = 3900;
 }

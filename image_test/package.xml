@@ -54,8 +54,6 @@
 <run_depend>cv_bridge</run_depend>
 <build_depend>opencv2</build_depend>
 <run_depend>opencv2</run_depend>
-<build_depend>pcl_chen</build_depend>
-<run_depend>pcl_chen</run_depend>
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- You can specify that this package is a metapackage here: -->
