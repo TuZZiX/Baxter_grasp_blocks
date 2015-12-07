@@ -1,4 +1,4 @@
-//#define MOVEIT
+#define MOVEIT
 
 #include <ros/ros.h>
 #include <ros/package.h> 
