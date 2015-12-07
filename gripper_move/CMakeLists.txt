@@ -19,7 +19,8 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 cs_add_library(gripper_move src/grippermove.cpp)
 cs_add_executable(grtest src/grtest.cpp)
 target_link_libraries(grtest gripper_move ${catkin_LIBRARIES})
-
+cs_add_executable(torque src/torque.cpp)
+target_link_libraries(torque gripper_move ${catkin_LIBRARIES})
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 cs_install()

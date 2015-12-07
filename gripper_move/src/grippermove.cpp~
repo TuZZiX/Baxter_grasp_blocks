@@ -1,6 +1,6 @@
 #include <gripper_move/grippermove.h>
 
-#define TORQUE
+#define WSN
 
 
 #ifdef WSN
@@ -50,22 +50,18 @@ void GripperMove::gripper_close(){
 #ifdef TORQUE
 
 GripperMove::GripperMove(ros::NodeHandle* nodehandle) : nh_(*nodehandle){
-	ros::Publisher dyn_pub = nh_.advertise<std_msgs::Int16>("cmd_topic_name", 1);
-    ros::Publisher torque_toggle = nh_.advertise<std_msgs::Bool>("cmd_topic_toggle", 1);
-    std_msgs::Int16 cmd_topic_nameaaa;
-    cmd_topic_nameaaa.data=3000;
-    std_msgs::Bool cmd_topic_toggleaaa;
-    cmd_topic_toggleaaa.data=0;
+	ros::Publisher dyn_pub = nh_.advertise<std_msgs::Int16>(cmd_topic_name, 1);
+    ros::Publisher torque_toggle = n.advertise<std_msgs::Bool>(cmd_topic_toggle, 1);
+    std_msgs::Int16 cmd_topic_nameaaa=3000;
+    std_msgs::Bool cmd_topic_toggleaaa=0;
     torque_toggle.publish(cmd_topic_toggleaaa);
     dyn_pub.publish(cmd_topic_nameaaa); 
 
 }
 
 void GripperMove::gripper_open(){
-	std_msgs::Int16 cmd_topic_nameaaa;
-	cmd_topic_nameaaa.data=3000;
-	std_msgs::Bool cmd_topic_toggleaaa;
-	cmd_topic_toggleaaa.data=0;
+	std_msgs::Int16 cmd_topic_nameaaa=3000;
+	std_msgs::Bool cmd_topic_toggleaaa=0;
 	torque_toggle.publish(cmd_topic_toggleaaa);
     dyn_pub.publish(cmd_topic_nameaaa); 
 
@@ -74,10 +70,8 @@ void GripperMove::gripper_open(){
 
 
 void GripperMove::gripper_close(){
-	std_msgs::Int16 cmd_topic_nameaaa;
-	cmd_topic_nameaaa.data=80;
-	std_msgs::Bool cmd_topic_toggleaaa;
-	cmd_topic_toggleaaa.data=1;
+	std_msgs::Int16 cmd_topic_nameaaa=80;
+	std_msgs::Bool cmd_topic_toggleaaa=1;
 	torque_toggle.publish(cmd_topic_toggleaaa);
     dyn_pub.publish(cmd_topic_nameaaa); 
 
