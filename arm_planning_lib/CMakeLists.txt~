@@ -40,7 +40,6 @@ target_link_libraries(arm_planning_lib_test arm_planning_lib baxter_traj_streame
 
 #add_dependencies(arm_planning_lib_test ${gripper_move_EXPORTED_TARGETS})
 #add_dependencies(arm_planning_lib ${gripper_move_EXPORTED_TARGETS})
-
 cs_install()
 cs_export()
     

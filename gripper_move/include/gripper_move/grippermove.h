@@ -3,8 +3,8 @@
 
 #include <ros/ros.h>
 #include <std_msgs/Int16.h>
-
-
+#include <math.h>
+#include <std_msgs/Bool.h>
 
 class GripperMove
 {
@@ -16,8 +16,8 @@ public:
 private:
        ros::NodeHandle nh_;
        ros::Publisher *position_publisher;
-
-    
+       ros::Publisher *dyn_pub;
+       ros::Publisher *torque_toggle;
 };
 
 #endif  

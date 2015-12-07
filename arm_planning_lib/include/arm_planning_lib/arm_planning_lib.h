@@ -13,11 +13,14 @@
 //#include <baxter_traj_streamer/baxter_traj_streamer.h>
 
 #define REAL_WORLD
+
 using namespace std;  //just to avoid requiring std::,  ...
 using namespace Eigen;
 typedef Matrix<double, 7, 1> Vector7d;
-#define MOTION_TIME 2.0
-#define GRIPPER_TIME 7.0
+
+#define MOTION_TIME 3.0
+#define GRIPPER_TIME 5.0
+
 
 class ArmPlanningInterface {
 private:

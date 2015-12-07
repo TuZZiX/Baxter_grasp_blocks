@@ -48,11 +48,6 @@
   <build_depend>baxter_traj_streamer</build_depend>
   <build_depend>actionlib</build_depend>
   <build_depend>gripper_move</build_depend>
-<build_depend>moveit_msgs</build_depend>
-<build_depend>moveit_ros_perception</build_depend>
-<build_depend>moveit_ros_planning_interface</build_depend>
-<build_depend>moveit_fake_controller_manager</build_depend>
-<build_depend>moveit_core</build_depend>
 
   <run_depend>eigen</run_depend>
   <run_depend>roscpp</run_depend>
@@ -62,14 +57,6 @@
   <run_depend>baxter_traj_streamer</run_depend>
   <run_depend>actionlib</run_depend>
   <run_depend>gripper_move</run_depend>
-<run_depend>moveit_ros_move_group</run_depend>
-<run_depend>moveit_simple_controllor_manager</run_depend>
-<run_depend>trajectory_msgs</run_depend>
-<run_depend>moveit_msgs</run_depend>
-<run_depend>moveit_ros_perception</run_depend>
-<run_depend>moveit_ros_planning_interface</run_depend>
-<run_depend>moveit_fake_controller_manager</run_depend>
-<run_depend>moveit_core</run_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

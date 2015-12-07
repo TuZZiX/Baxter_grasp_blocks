@@ -1,8 +1,14 @@
+//#define MOVEIT
+
 #include <ros/ros.h>
 #include <ros/package.h> 
 #include <geometry_msgs/Pose.h>
 #include <cwru_msgs/Path.h>
+#ifdef MOVEIT
+#include <arm_planning_lib/arm_planning_lib_moveit.h>
+#else
 #include <arm_planning_lib/arm_planning_lib.h>
+#endif
 #include <pcl_chen/pcl_grabing.h>
 #include <image_transport/image_transport.h>
 #include <opencv2/highgui/highgui.hpp>
@@ -73,8 +79,12 @@ int main(int argc, char** argv){
 	ros::NodeHandle nh; 
 	publishToScreen(nh, "init.jpg");
 	Pcl_grabing pcl(&nh);
+	#ifdef MOVEIT
+	MoveitPlanningInterface planner(&nh);
+	#else
 	ArmPlanningInterface planner(&nh);
-
+#	endif
+	
 	//connection to the robot
 	geometry_msgs::Pose blockPose;
 	Vector3f plane_normal, major_axis, centroid;

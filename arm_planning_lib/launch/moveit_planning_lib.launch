@@ -1,0 +1,19 @@
+<launch>
+
+<include file="$(find cwru_baxter_launch)/yale_gripper_xform.launch" />
+
+<node pkg="baxter_tools" type="enable_robot.py" name="enable_robot" args="-e"/>
+
+<include file="$(find baxter_moveit_config)/launch/demo_baxter.launch">
+    <arg name="kinect" value="false" />
+</include>
+
+<node pkg="baxter_interface" type="joint_trajectory_action_server.py" name="joint_trajectory_action_server"/>
+
+<node pkg="baxter_gripper" type="dynamixel_motor_node" name="dynamixel_motor_node"/>
+
+<node pkg="baxter_traj_streamer" type="traj_interpolator_as" name="traj_interpolator_as"/>
+
+<node pkg="baxter_cartesian_moves" type="baxter_cart_move_as" name="baxter_cart_move_as"/>
+
+</launch>

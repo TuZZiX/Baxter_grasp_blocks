@@ -8,10 +8,9 @@ Done:
 	find gripper_offset
 	find drop_offset_left
 	find drop_offset_right
-Todo:
 	solve inaccurate tf
+Todo:
 	solve shaking
 	add stop function for action
 	add timeout
-	modify cart planning server to be the interface
-	try to use better planning library
+	use moveit library
