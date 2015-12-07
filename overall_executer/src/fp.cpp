@@ -73,14 +73,30 @@ void publishToScreen(ros::NodeHandle &nh, string path){
 	ros::spinOnce();
 }
 
-void printColorToScreen(ros::Nodehandle &nh, string c){
-	switch(c){
-		case "red": publishToScreen(nh, "red_found.jpg"); break;
-		case "white": publishToScreen(nh, "white_found.jpg"); break;
-		case "blue": publishToScreen(nh, "blue_found.jpg"); break;
-		case "green": publishToScreen(nh, "green_found.jpg"); break;
-		case "wood": publishToScreen(nh, "wooden_found.jpg"); break;
-		case "black": publishToScreen(nh, "black_found.jpg"); break;
+void printColorToScreen(ros::NodeHandle &nh, string c){
+	if (c.compare("red"))
+	{
+		publishToScreen(nh, "red_found.jpg"); 
+	}
+	else if (c.compare("blue"))
+	{
+		publishToScreen(nh, "blue_found.jpg"); 
+	}
+	else if (c.compare("white"))
+	{
+		publishToScreen(nh, "white_found.jpg"); 
+	}
+	else if (c.compare("black"))
+	{
+		publishToScreen(nh, "black_found.jpg"); 
+	}
+	else if (c.compare("green"))
+	{
+		publishToScreen(nh, "green_found.jpg"); 
+	}
+	else if (c.compare("wood"))
+	{
+		publishToScreen(nh, "wooden_found.jpg"); 
 	}
 }
 
