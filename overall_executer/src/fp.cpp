@@ -19,8 +19,7 @@
 #include <Eigen/Eigenvalues>
 #include <string>
 
-enum ColorEnum {RED, WHITE, BLACK, GREEN, BLUE, WOODEN};
-typedef enum ColorEnum Color;
+
 using namespace Eigen;
 
 string determineColor(Eigen::Vector3d color){
@@ -72,6 +71,17 @@ void publishToScreen(ros::NodeHandle &nh, string path){
 	pub.publish(*msg);
 	ros::Duration(1.0).sleep();
 	ros::spinOnce();
+}
+
+void printColorToScreen(ros::Nodehandle &nh, string c){
+	switch(c){
+		case "red": publishToScreen(nh, "red_found.jpg"); break;
+		case "white": publishToScreen(nh, "white_found.jpg"); break;
+		case "blue": publishToScreen(nh, "blue_found.jpg"); break;
+		case "green": publishToScreen(nh, "green_found.jpg"); break;
+		case "wood": publishToScreen(nh, "wooden_found.jpg"); break;
+		case "black": publishToScreen(nh, "black_found.jpg"); break;
+	}
 }
 
 int main(int argc, char** argv){
@@ -142,6 +152,7 @@ int main(int argc, char** argv){
 			//cwru_msgs::Pose robotPose = getCurrentPose();
 			
 			ROS_INFO("%s Block found on table. Beginning planning.\n",c.c_str());
+			printColorToScreen(nh, c);
 			bool success = false;
 			/*
 			bool success = planner.planPath(blockPose);

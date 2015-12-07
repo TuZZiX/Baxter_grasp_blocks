@@ -13,7 +13,7 @@
 #include <Eigen/Eigenvalues>
 #include <string>
 
-#define REAL_WORLD
+#define GAZEBO
 
 
 
