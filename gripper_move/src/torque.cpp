@@ -11,9 +11,9 @@ int main(int argc, char** argv) {
     while (ros::ok()) {
         
     	grippertest.gripper_close();
-    	ros::Duration(1).sleep(); 
+    	ros::Duration(5).sleep(); 
     	grippertest.gripper_open();
-    	ros::Duration(1).sleep(); 
+    	ros::Duration(10).sleep(); 
         ros::spinOnce();
     }
 }
