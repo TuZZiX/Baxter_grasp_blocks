@@ -96,7 +96,7 @@ int main(int argc, char** argv){
 	bool wasHand = false;
 	publishToScreen(nh, "wait_hand_sig.jpg");
 	while(searching){
-		/*
+		
 		if(!handPresent){
 			handPresent = pcl.checkForHand();
 			ROS_INFO("check point 3");
@@ -106,11 +106,11 @@ int main(int argc, char** argv){
 			ROS_INFO("check point 4");
 		}
 		if(handPresent && !wasHand){
-			wasHand = pcl.checkForHand();
+			wasHand = !(pcl.checkForHand());
 			ROS_INFO("check point 5");
-		}*/
-//		if(wasHand){
-		if(true){
+		}
+		if(wasHand){
+		//if(true){
 			bool block = pcl.isBlock();
 			if(!block){
 				handPresent = false;
