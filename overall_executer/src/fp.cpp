@@ -18,33 +18,38 @@ typedef enum ColorEnum Color;
 using namespace Eigen;
 
 string determineColor(Eigen::Vector3d color){
-	int r = color[0];
-	int g = color[1];
-	int b = color[2];
+    int r = color[0];
+    int g = color[1];
+    int b = color[2];
 
 
 
-	if(r<80 && g<80 && b<80){
-		return "black";
-	}
+    if(r<150 && g<150 && b<150){
+        return "black";
+    }
 
-	if(r>200 && g>200 && b>180){
-		return "wood";
-	}
+    if(r>190 && g>190 && b>190){
+        if (g-b > 10)
+        {
+            return "wood";
+        } else {
+            return "white";
+        }
+    }
 
-	if(r>160 && g<80 && b<110){
-		return "red";
-	}
+    if(r>160 && g<150 && b<170){
+        return "red";
+    }
 
-	if(b>160 && r<130 && g>80 && g<180){
-		return "blue";
-	}
+    if(b>160 && r>80&& r<180 && g>80 && g<190){
+        return "blue";
+    }
 
-	if(g>160 && r>80 && r<180 && b<100){
-		return "green";
-	}
+    if(g>160 && r>80 && r<200 && b<160){
+        return "green";
+    }
 
-	return "white";
+    return "wood";
 }
 
 void publishToScreen(ros::NodeHandle &nh, string path){

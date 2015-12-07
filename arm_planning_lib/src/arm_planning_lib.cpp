@@ -12,7 +12,7 @@ cart_move_action_client_("cartMoveActionServer", true), gripper(&nh_) { // const
 	}
 	ROS_INFO("connected to action server"); // if here, then we connected to the server;
 	collision_offset << 0, 0, 0.4;
-	gripper_offset << -0.030, 0, 0.12;
+	gripper_offset << -0.030, 0, 0.10;
 	/*gripper_pose.pose.position.x = ;
 	gripper_pose.pose.position.y =;
 	gripper_pose.pose.position.z =;
@@ -31,12 +31,12 @@ cart_move_action_client_("cartMoveActionServer", true), gripper(&nh_) { // const
 	arm_back_pose.pose.orientation.w = 0;
 	
 	//drop_offset_left << -0.627811922278, -0.37037794008, -0.01957099178;
-	drop_offset_left << -0.1, -0.25, 0;
+	drop_offset_left << -0.15, 0.35, 0;
 	//drop_offset_right << -0.02005453231, 0.29488994572, 0.00129911747;
-	drop_offset_right << 0.1, 0.25, 0;
+	drop_offset_right << 0.15, 0.35, 0;
 	take_look_joints << -0.6706028380738552, 0.3385839239076704, -3.0484307475016825, -1.1967584710123835, -0.29302672221528303, 1.4968265397170557, 1.7967659166798897;
 	take_look_pose.pose.position.x = 0.54666548495;
-	take_look_pose.pose.position.y = -0.302305563037;
+	take_look_pose.pose.position.y = -0.102305563037;
 	take_look_pose.pose.position.z = 0.366209878016;
 	take_look_pose.pose.orientation.x = -0.547922120529;
 	take_look_pose.pose.orientation.y = -0.0239951476795;
@@ -163,9 +163,9 @@ pose:
 #ifdef REAL_WORLD
 	global_pose_offset.pose.position.x = 0;
 	global_pose_offset.pose.position.y = 0;
-	global_pose_offset.pose.position.z = 0;
+	global_pose_offset.pose.position.z = -0.01;
 	global_pose_offset.pose.orientation.x = 0;
-	global_pose_offset.pose.orientation.y = 0;
+	global_pose_offset.pose.orientation.y = -0.00209;
 	global_pose_offset.pose.orientation.z = 0;
 	global_pose_offset.pose.orientation.w = 0;
 #endif

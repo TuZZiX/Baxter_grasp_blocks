@@ -187,7 +187,7 @@ bool Pcl_grabing::isBlock()
         dist[2]=0;
         distance = dist.norm();
         if(distance < TableRadius)
-            if(pt[2]>(TableHeight+0.003) && pt[2]<BlockMaxHeight)
+            if(pt[2]>(TableHeight+0.01) && pt[2]<BlockMaxHeight)
             {
                 double r, g, b, color_err;
                 r = transformed_pclKinect_clr_ptr_->points[i].r;
@@ -303,6 +303,48 @@ bool Pcl_grabing::isBlock()
 Eigen::Vector3d Pcl_grabing::getColor()
 {
     return BlockColor;
+}
+
+
+std::string Pcl_grabing::getColor2()
+{
+    int n=0;
+    Eigen::Vector3d red,blue,black,green,b,d,white;
+    b=BlockColor/BlockColor.norm();
+
+    int r_ = BlockColor[0];
+    int g_ = BlockColor[1];
+    int b_ = BlockColor[2];
+    if(r_>190 && g_>190 && b_>190){
+        return "white";
+    }
+
+    
+    black<<133.113, 125.14, 127.745;
+    black/=black.norm();
+    d=black-b;
+    if (d.norm()<Eps)
+        return "black"; // black
+
+    red<<185.185,105.872,127.196; // red
+    red=red/red.norm();
+    d=red-b;
+    if(d.norm()<Eps)
+        return "red"; // red
+
+    green<<186.449,190.894,146.061;
+    green/=green.norm();
+    d=green-b;
+    if(d.norm()<Eps)
+        return "green";// green
+
+    blue<<146.322,165.242,193.03;
+    blue/=blue.norm();
+    d=blue-b;
+    if(d.norm()<Eps)
+        return "blue"; // blue
+
+    return "wood"; // error
 }
 
 geometry_msgs::Pose Pcl_grabing::getBlockPose()

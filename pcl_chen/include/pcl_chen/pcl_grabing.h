@@ -11,6 +11,7 @@
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
 #include <Eigen/Eigenvalues>
+#include <string>
 
 #define REAL_WORLD
 
@@ -63,7 +64,8 @@ public:
     bool isBlock(); //
     geometry_msgs::Pose getBlockPose(); //
     void getBlockVector(Vector3f &plane_normal, Vector3f &major_axis, Vector3f &centroid);
-    Eigen::Vector3d getColor(); //
+    Eigen::Vector3d getColor();
+    std::string getColor2();
 
     CwruPclUtils pcl_wsn;
     //float getWidth();
