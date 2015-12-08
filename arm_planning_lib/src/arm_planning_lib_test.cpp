@@ -1,11 +1,11 @@
-#include <arm_planning_lib/arm_planning_lib.h>
+//#include <arm_planning_lib/arm_planning_lib.h>
 #include <arm_planning_lib/arm_planning_lib_moveit.h>
 
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "arm_planning_lib_test"); //node name
     ros::NodeHandle nh;
-    ArmPlanningInterface interface(&nh);
+    //ArmPlanningInterface interface(&nh);
     MoveitPlanningInterface moveit(&nh);
     ROS_INFO("setting poses");
     Vector7d my_angle;
@@ -15,11 +15,11 @@ int main(int argc, char** argv) {
 
     my_pose.position.x = 0.627811922278;
     my_pose.position.y = -0.00340972086974;
-    my_pose.position.z = 0.0543679733262;
-    my_pose.orientation.x = 0.629826654045;
-    my_pose.orientation.y = 0.776525376337;
-    my_pose.orientation.z = 0.0171547560392;
-    my_pose.orientation.w = -0.0056956215282;
+    my_pose.position.z = -0.0243679733262;
+    my_pose.orientation.x = 1;
+    my_pose.orientation.y = 0;
+    my_pose.orientation.z = 0;
+    my_pose.orientation.w = 0;
     /*
     POSE: X = 0.877945, Y = 0.036200, Z = -0.132033, orientation: X = 0.979358, Y = -0.202119, Z = 0.000723, W = -0.002389
     while (ros::ok()) {
@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
     }*/
     //ROS_INFO("total %d colors", colors.size());
 
-
+ 
     bool ret;
     while (ros::ok()) {
         for (int i = 0; i < 6; ++i)
@@ -62,7 +62,7 @@ int main(int argc, char** argv) {
             ros::spinOnce();
         }
     }
-        /*
+       /* 
     moveit.moveArmsBack();
     ros::Duration(5.0).sleep();
     moveit.planPath(my_pose);

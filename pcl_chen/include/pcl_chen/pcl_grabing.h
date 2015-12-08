@@ -51,7 +51,7 @@
 #define TableRadius 0.35	//table r
 #define HandMinHeight 0.1	//
 #define BlockMaxHeight 0.1
-#define BlockTopRadius 0.008
+#define BlockTopRadius 0.007
 #define BlockRadius 0.05
 #endif
 

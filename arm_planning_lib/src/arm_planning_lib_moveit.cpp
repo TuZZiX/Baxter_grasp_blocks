@@ -11,8 +11,15 @@ display_publisher(nh_.advertise<moveit_msgs::DisplayTrajectory>("/move_group/dis
   // We can also print the name of the end-effector link for this group.
 	ROS_INFO("Reference end-effector frame: %s", right_arm.getEndEffectorLink().c_str());
 
-	right_arm.setPlanningTime(1.0);
+	// We can print the name of the reference frame for this robot.
+	ROS_INFO("Reference robot frame: %s", left_arm.getPlanningFrame().c_str());
+
+  // We can also print the name of the end-effector link for this group.
+	ROS_INFO("Reference end-effector frame: %s", left_arm.getEndEffectorLink().c_str());
 /*
+	right_arm.setPlanningTime(10.0);
+
+
 	moveit_msgs::CollisionObject collision_object;
 	collision_object.header.frame_id = "torso";
 
@@ -42,8 +49,8 @@ display_publisher(nh_.advertise<moveit_msgs::DisplayTrajectory>("/move_group/dis
 	ROS_INFO("Add an kinect into the world");  
 	planning_scene_interface.addCollisionObjects(collision_objects);*/
 
-	collision_offset << -0.02, 0.03, 0.4;
-	gripper_offset << -0.02, 0.03, 0.175;
+	collision_offset << -0.03, 0.03, 0.3;
+	gripper_offset << -0.02, 0.03, 0.170;
 	/*gripper_pose.position.x = ;
 	gripper_pose.position.y =;
 	gripper_pose.position.z =;
@@ -63,7 +70,7 @@ display_publisher(nh_.advertise<moveit_msgs::DisplayTrajectory>("/move_group/dis
 	
 	left_arm_back_pose.position.x = 0.356899870469;
 	left_arm_back_pose.position.y = 0.553228163753;
-	left_arm_back_pose.position.z = -0.333650371585;
+	left_arm_back_pose.position.z = 0.333650371585;
 	left_arm_back_pose.orientation.x = 1;
 	left_arm_back_pose.orientation.y = 0;
 	left_arm_back_pose.orientation.z = 0;
@@ -72,25 +79,27 @@ display_publisher(nh_.advertise<moveit_msgs::DisplayTrajectory>("/move_group/dis
 	drop_offset_left << -0.15, -0.25, 0;
 	drop_offset_right << -0.15, 0.25, 0;
 
-	take_look_joints << -0.6706028380738552, 0.3385839239076704, -3.0484307475016825, -1.1967584710123835, -0.29302672221528303, 1.4968265397170557, 1.7967659166798897;
-	take_look_pose.position.x = 0.54666548495;
-	take_look_pose.position.y = -0.102305563037;
-	take_look_pose.position.z = 0.366209878016;
-	take_look_pose.orientation.x = -0.547922120529;
-	take_look_pose.orientation.y = -0.0239951476795;
-	take_look_pose.orientation.z = -0.0745942473519;
-	take_look_pose.orientation.w = 0.832851295841;
+	take_look_joints << -0.39112334320528064, 0.66763075203324, -0.0576000209655799, 1.5231539645741858, -2.2009096504930143, 1.1715049362737628, 1.351338235077913;
+	take_look_pose.position.x = 0.52076088177;
+	take_look_pose.position.y = -0.161747407178;
+	take_look_pose.position.z = 0.10960294492;
+	take_look_pose.orientation.x = -0.403358006759;
+	take_look_pose.orientation.y = 0.316151288663;
+	take_look_pose.orientation.z = 0.625232282999;
+	take_look_pose.orientation.w = 0.588587523956;
 
 	take_look_joints << -0.18503156094537968, 0.44527797626583865, 0.36021593694382065, 1.827325037963473, 1.0199002550686511, 1.0137709796128629, 1.2701787563643496;
 
 #ifdef REAL_WORLD
-	global_pose_offset.position.x = 0.02;
-	global_pose_offset.position.y = 0.01;
+	
+	global_pose_offset.position.x = 0;
+	global_pose_offset.position.y = 0;
 	global_pose_offset.position.z = 0;
-	global_pose_offset.orientation.x = 0.13;
-	global_pose_offset.orientation.y = -0.20;
+
+	global_pose_offset.orientation.x = 0;
+	global_pose_offset.orientation.y = 0;
 	global_pose_offset.orientation.z = 0;
-	global_pose_offset.orientation.w = 0.01;
+	global_pose_offset.orientation.w = 0;
 #endif
 
 /*
@@ -163,6 +172,7 @@ bool MoveitPlanningInterface::planPath(geometry_msgs::Pose pose) {
 	right_arm.setPoseTarget(pose);
 	bool success = right_arm.plan(my_plan);
 	return success;
+	return true;
 }
 
 bool MoveitPlanningInterface::planPath(Vector7d joints) {
@@ -180,6 +190,7 @@ bool MoveitPlanningInterface::planPath(Vector7d joints) {
 	bool success = right_arm.plan(my_plan);
 
 	return success;
+	return true;
 }
 
 bool MoveitPlanningInterface::planPath(Vector3f plane_normal, Vector3f major_axis, Vector3f centroid) {
@@ -406,7 +417,15 @@ geometry_msgs::Pose MoveitPlanningInterface::convToPose(Vector3f plane_normal, V
 	geometry_msgs::Pose pose;
 	Affine3d Affine_des_gripper;
 	Vector3d xvec_des,yvec_des,zvec_des,origin_des;
-	
+	float temp;
+	temp = major_axis[0];
+	major_axis[0] = major_axis[1];
+	major_axis[1] = temp;
+
+	Vector3f rotation = major_axis;
+	major_axis[0] = (sqrt(3)/2)*rotation[0] - rotation[1]/2;
+	major_axis[1] = (sqrt(3)/2)*rotation[1] + rotation[0]/2;
+
 	Matrix3d Rmat;
 	for (int i=0;i<3;i++) {
 		origin_des[i] = centroid[i]; // convert to double precision

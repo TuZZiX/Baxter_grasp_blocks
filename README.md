@@ -5,31 +5,54 @@ This repository is for EECS-600 final project
 
 Group Gamma (3rd)
 
-#To run code:
+# Depandencies
 
-**In gazebo:**
+This branch is using moveit as its planning interface, so in order to compile it, you have to get moveit first:
 
-`roslaunch cwru_baxter_sim baxter_world.launch`
+	`sudo apt-get install ros-indigo-moveit-full`
 
-`roslaunch overall_executer overall_executer.launch`
+You also need to have config for Baxter with you:
 
-change the #define in arm_planning_lib and pcl_chen to *GAZEBO*
+	`git clone https://github.com/TuZZiX/baxter_moveit_config.git`
 
-**On real robot:**
+# Moveit planning:
 
-`roslaunch overall_executer kinect_gripper.launch`
+Enable *#define MOVEIT* in overall_executer/scr/fp.cpp
 
-`roslaunch overall_executer overall_executer.launch`
+	`roslaunch overall_executer kinect_gripper.launch`
 
-change the #define in arm_planning_lib and pcl_chen to *REAL_WORLD*
+	`roslaunch arm_planning_lib moveit_planning_lib.launch`
 
-#Troubleshooting:
+	`rosrun overall_executer overall_executer`
+
+
+# Classic planning:
+
+comment *#define MOVEIT* in overall_executer/scr/fp.cpp
+
+Change the #define in arm_planning_lib and pcl_chen to *REAL_WORLD*
+
+	`roslaunch overall_executer kinect_gripper.launch`
+
+	`roslaunch overall_executer overall_executer.launch`
+
+
+# In gazebo:
+
+Change the #define in arm_planning_lib and pcl_chen to *GAZEBO*
+
+	`roslaunch cwru_baxter_sim baxter_world.launch`
+
+	`roslaunch overall_executer overall_executer.launch`
+
+
+# Troubleshooting:
 
 If could not open device when running *overall_executer.launch* you have to give permission to the gripper USB connector by:
 
-`sudo chmod -R 777 /dev/ttyUSB0`
+	`sudo chmod -R 777 /dev/ttyUSB0`
 
-#Collaborators:
+# Collaborators:
 
 Shipei Tian: Arm motion planning lib, team leader
 
