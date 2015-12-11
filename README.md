@@ -33,8 +33,6 @@ You also need to have config for Baxter with you:
 
 Enable *#define MOVEIT* in overall_executer/scr/fp.cpp
 
-`roslaunch overall_executer kinect_gripper.launch`
-
 `roslaunch arm_planning_lib moveit_planning_lib.launch`
 
 `rosrun overall_executer overall_executer`
@@ -42,7 +40,7 @@ Enable *#define MOVEIT* in overall_executer/scr/fp.cpp
 
 # Classic planning:
 
-comment *#define MOVEIT* in overall_executer/scr/fp.cpp
+Comment *#define MOVEIT* in overall_executer/scr/fp.cpp
 
 Change the #define in arm_planning_lib and pcl_chen to *REAL_WORLD*
 
@@ -58,13 +56,11 @@ Change the #define in arm_planning_lib and pcl_chen to *GAZEBO*
 `roslaunch cwru_baxter_sim baxter_world.launch`
 
 `roslaunch overall_executer overall_executer.launch`
-
-
 # Troubleshooting:
 
 If could not open device when running *overall_executer.launch* you have to give permission to the gripper USB connector by:
 
-`sudo chmod -R 777 /dev/ttyUSB0`
+	`sudo chmod -R 777 /dev/ttyUSB0`
 
 # Collaborators:
 
