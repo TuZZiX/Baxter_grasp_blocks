@@ -15,7 +15,7 @@
 #include <moveit_msgs/CollisionObject.h>
 //#include <baxter_traj_streamer/baxter_traj_streamer.h>
 
-#define GAZEBO
+#define REAL_WORLD
 #define MOVEIT
 
 using namespace std;  //just to avoid requiring std::,  ...

@@ -10,6 +10,7 @@
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
 #include <string>
+#include <math.h>
 //#include <baxter_traj_streamer/baxter_traj_streamer.h>
 
 #define REAL_WORLD

@@ -11,8 +11,8 @@ cart_move_action_client_("cartMoveActionServer", true), gripper(&nh_) { // const
 		ROS_INFO("retrying...");
 	}
 	ROS_INFO("connected to action server"); // if here, then we connected to the server;
-	collision_offset << 0, 0, 0.4;
-	gripper_offset << -0.02, 0.03, 0.09;
+	collision_offset << -0.01, 0.03, 0.3;
+	gripper_offset << -0.01, 0.03, 0.085;
 	/*gripper_pose.pose.position.x = ;
 	gripper_pose.pose.position.y =;
 	gripper_pose.pose.position.z =;
@@ -21,9 +21,9 @@ cart_move_action_client_("cartMoveActionServer", true), gripper(&nh_) { // const
 	gripper_pose.pose.orientation.z =;
 	gripper_pose.pose.orientation.w =;
 */
-	arm_back_joints << -0.687578798801038, -1.2286859555710585, 1.7230128939734446, 1.4960121051119204, -0.3406034304607237, 1.6922049512515933, -2.6852473873167133;
+	arm_back_joints << -0.787578798801038, -1.2286859555710585, 1.7230128939734446, 1.4960121051119204, -0.3406034304607237, 1.6922049512515933, -2.6852473873167133;
 	arm_back_pose.pose.position.x = 0.48336029291;
-	arm_back_pose.pose.position.y = -0.345984422306;
+	arm_back_pose.pose.position.y = -0.405984422306;
 	arm_back_pose.pose.position.z = 0.442497286433;
 	arm_back_pose.pose.orientation.x = 1;
 	arm_back_pose.pose.orientation.y = 0;
@@ -165,7 +165,7 @@ pose:
 	global_pose_offset.pose.position.y = 0;
 	global_pose_offset.pose.position.z = 0;
 	global_pose_offset.pose.orientation.x = 0;
-	global_pose_offset.pose.orientation.y = -0.00209;
+	global_pose_offset.pose.orientation.y = 0;
 	global_pose_offset.pose.orientation.z = 0;
 	global_pose_offset.pose.orientation.w = 0;
 #endif
@@ -442,9 +442,9 @@ bool ArmPlanningInterface::colorMovement(string color, geometry_msgs::PoseStampe
 		ros::Duration(MOTION_TIME).sleep();
 		takeALook();
 		ros::Duration(MOTION_TIME).sleep();
-		next = addPosOffset(block_pose, collision_offset);
-		EXECUTE();
-		ros::Duration(MOTION_TIME).sleep();
+		//next = addPosOffset(block_pose, collision_offset);
+		//EXECUTE();
+		//ros::Duration(MOTION_TIME).sleep();
 		next = addPosOffset(next, drop_offset_left);
 		EXECUTE();
 		ros::Duration(MOTION_TIME).sleep();
@@ -518,10 +518,41 @@ geometry_msgs::Pose ArmPlanningInterface::transformEigenAffine3dToPose(Affine3d 
 }
 
 geometry_msgs::PoseStamped ArmPlanningInterface::convToStampPose(Vector3f plane_normal, Vector3f major_axis, Vector3f centroid) {
+	/*
 	geometry_msgs::PoseStamped pose;
 	Affine3d Affine_des_gripper;
 	Vector3d xvec_des,yvec_des,zvec_des,origin_des;
 	
+	Matrix3d Rmat;
+	for (int i=0;i<3;i++) {
+		origin_des[i] = centroid[i]; // convert to double precision
+		zvec_des[i] = -plane_normal[i]; //want tool z pointing OPPOSITE surface normal
+		xvec_des[i] = major_axis[i];
+	}
+//	origin_des[2]+=0.02; //raise up 2cm
+	yvec_des = zvec_des.cross(xvec_des); //construct consistent right-hand triad
+	Rmat.col(0)= xvec_des;
+	Rmat.col(1)= yvec_des;
+	Rmat.col(2)= zvec_des;
+	Affine_des_gripper.linear()=Rmat;
+	Affine_des_gripper.translation()=origin_des;
+	
+	//convert des pose from Affine to geometry_msgs::PoseStamped
+	pose.pose = transformEigenAffine3dToPose(Affine_des_gripper);
+	return pose;*/
+
+	geometry_msgs::PoseStamped pose;
+	Affine3d Affine_des_gripper;
+	Vector3d xvec_des,yvec_des,zvec_des,origin_des;
+	float temp;
+	temp = major_axis[0];
+	major_axis[0] = major_axis[1];
+	major_axis[1] = temp;
+/*
+	Vector3f rotation = major_axis;
+	major_axis[0] = (sqrt(3)/2)*rotation[0] + rotation[1]/2;
+	major_axis[1] = (sqrt(3)/2)*rotation[1] - rotation[0]/2;
+*/
 	Matrix3d Rmat;
 	for (int i=0;i<3;i++) {
 		origin_des[i] = centroid[i]; // convert to double precision

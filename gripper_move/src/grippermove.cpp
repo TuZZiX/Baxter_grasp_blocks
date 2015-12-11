@@ -18,7 +18,7 @@ GripperMove::GripperMove(ros::NodeHandle* nodehandle) : nh_(*nodehandle){
 }
 void GripperMove::gripper_open(){
 	std_msgs::Int16 position;
-	position.data = 3200;
+	position.data = 3000;
 	(*position_publisher).publish(position);
 	/*
 	std_msgs::Int16 position;
@@ -55,7 +55,7 @@ GripperMove::GripperMove(ros::NodeHandle* nodehandle) : nh_(*nodehandle){
     static ros::Publisher torque_togglea = nh_.advertise<std_msgs::Bool>("/dynamixel_motor1_mode", 1);
     torque_toggle = &torque_togglea;
     std_msgs::Int16 cmd_topic_nameaaa;
-    cmd_topic_nameaaa.data=3200;
+    cmd_topic_nameaaa.data=3000;
     std_msgs::Bool cmd_topic_toggleaaa;
     cmd_topic_toggleaaa.data=0;
     (*torque_toggle).publish(cmd_topic_toggleaaa);

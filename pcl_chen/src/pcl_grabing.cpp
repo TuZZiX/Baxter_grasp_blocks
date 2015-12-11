@@ -187,7 +187,7 @@ bool Pcl_grabing::isBlock()
         dist[2]=0;
         distance = dist.norm();
         if(distance < TableRadius)
-            if(pt[2]>(TableHeight+0.01) && pt[2]<BlockMaxHeight)
+            if(pt[2]>(TableHeight+0.015) && pt[2]<BlockMaxHeight)
             {
                 double r, g, b, color_err;
                 r = transformed_pclKinect_clr_ptr_->points[i].r;
@@ -197,7 +197,7 @@ bool Pcl_grabing::isBlock()
                 g = abs(roughColor_G - g);
                 b = abs(roughColor_B - b);
                 color_err = r+g+b;
-				index_all.push_back(i);
+                index_all.push_back(i);
                 if (color_err > ColorRange)
                 {
                     index.push_back(i);
@@ -231,8 +231,8 @@ bool Pcl_grabing::isBlock()
     Eigen::Vector3f BlockCentroid;
     BlockCentroid =pcl_wsn.compute_centroid(display_ptr_);
     ROS_INFO_STREAM("The centroid of the block:"<<BlockCentroid.transpose());
-	
-	int n_block_points_c = index.size();
+    
+    int n_block_points_c = index.size();
     BlockColor/=n_block_points_c;
     ROS_INFO_STREAM("The block color:"<<BlockColor.transpose());
 
@@ -253,7 +253,7 @@ bool Pcl_grabing::isBlock()
     int n_block_top = block_index.size();
     ROS_INFO("There are %d points around the block's top center",n_block_top);
     if(n_block_top==0)
-	return 0;
+    return 0;
     pcl::PointCloud<pcl::PointXYZ>::Ptr block_ptr_(new PointCloud<pcl::PointXYZ>);
     block_ptr_->header=display_ptr_->header;
     block_ptr_->is_dense=display_ptr_->is_dense;
