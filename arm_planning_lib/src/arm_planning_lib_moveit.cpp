@@ -17,10 +17,9 @@ display_publisher(nh_.advertise<moveit_msgs::DisplayTrajectory>("/move_group/dis
   // We can also print the name of the end-effector link for this group.
 	ROS_INFO("Reference end-effector frame: %s", left_arm.getEndEffectorLink().c_str());
 
+	right_arm.setPlanningTime(5.0);
+
 /*
-	right_arm.setPlanningTime(10.0);
-
-
 	moveit_msgs::CollisionObject collision_object;
 	collision_object.header.frame_id = "torso";
 
@@ -83,11 +82,7 @@ display_publisher(nh_.advertise<moveit_msgs::DisplayTrajectory>("/move_group/dis
 	take_look_joints << -0.39112334320528064, 0.66763075203324, -0.0576000209655799, 1.5231539645741858, -2.2009096504930143, 1.1715049362737628, 1.351338235077913;
 	take_look_pose.position.x = 0.52076088177;
 	take_look_pose.position.y = -0.161747407178;
-<<<<<<< HEAD
 	take_look_pose.position.z = 0.20960294492;
-=======
-	take_look_pose.position.z = 0.10960294492;
->>>>>>> origin/moveit_planning_lib
 	take_look_pose.orientation.x = -0.403358006759;
 	take_look_pose.orientation.y = 0.316151288663;
 	take_look_pose.orientation.z = 0.625232282999;
@@ -422,10 +417,7 @@ geometry_msgs::Pose MoveitPlanningInterface::convToPose(Vector3f plane_normal, V
 	geometry_msgs::Pose pose;
 	Affine3d Affine_des_gripper;
 	Vector3d xvec_des,yvec_des,zvec_des,origin_des;
-<<<<<<< HEAD
 	
-=======
->>>>>>> origin/moveit_planning_lib
 	float temp;
 	temp = major_axis[0];
 	major_axis[0] = major_axis[1];

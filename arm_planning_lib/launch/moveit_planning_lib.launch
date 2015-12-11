@@ -1,6 +1,6 @@
 <launch>
 
-<!--<include file="$(find cwru_baxter_launch)/yale_gripper_xform.launch" />-->
+<include file="$(find cwru_baxter_launch)/yale_gripper_xform.launch" />
 
 <node pkg="baxter_tools" type="enable_robot.py" name="enable_robot" args="-e"/>
 

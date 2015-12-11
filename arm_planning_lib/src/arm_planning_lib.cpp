@@ -11,10 +11,8 @@ cart_move_action_client_("cartMoveActionServer", true), gripper(&nh_) { // const
 		ROS_INFO("retrying...");
 	}
 	ROS_INFO("connected to action server"); // if here, then we connected to the server;
-
 	collision_offset << -0.01, 0.03, 0.3;
 	gripper_offset << -0.01, 0.03, 0.085;
-
 	/*gripper_pose.pose.position.x = ;
 	gripper_pose.pose.position.y =;
 	gripper_pose.pose.position.z =;
@@ -550,19 +548,11 @@ geometry_msgs::PoseStamped ArmPlanningInterface::convToStampPose(Vector3f plane_
 	temp = major_axis[0];
 	major_axis[0] = major_axis[1];
 	major_axis[1] = temp;
-<<<<<<< HEAD
 /*
 	Vector3f rotation = major_axis;
 	major_axis[0] = (sqrt(3)/2)*rotation[0] + rotation[1]/2;
 	major_axis[1] = (sqrt(3)/2)*rotation[1] - rotation[0]/2;
 */
-=======
-
-	Vector3f rotation = major_axis;
-	major_axis[0] = (sqrt(3)/2)*rotation[0] - rotation[1]/2;
-	major_axis[1] = (sqrt(3)/2)*rotation[1] + rotation[0]/2;
-
->>>>>>> origin/moveit_planning_lib
 	Matrix3d Rmat;
 	for (int i=0;i<3;i++) {
 		origin_des[i] = centroid[i]; // convert to double precision
